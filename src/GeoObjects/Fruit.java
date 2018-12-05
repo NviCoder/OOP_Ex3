@@ -5,7 +5,7 @@ package GeoObjects;
  * @author Yoav and Elad.
  *
  */
-public class Fruit extends genericGeoObject {
+public class Fruit extends GenericGeoObject {
 	public double weight,id;
 	
 	public Fruit(Point3D location, double weight,double id) 

@@ -1,13 +1,21 @@
 package GeoObjects;
 
 
-public class genericGeoObject {
-	
+public class GenericGeoObject {
+
 	private Point3D location;
 	public boolean alive;
-	int seconds = 0;
+	private double seconds = 0;
 	
-	public genericGeoObject (Point3D location) {
+	public double getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(double seconds) {
+		this.seconds = seconds;
+	}
+
+	public GenericGeoObject (Point3D location) {
 		this.location= location;
 		this.alive =true;
 	}
@@ -24,5 +32,9 @@ public class genericGeoObject {
 	public String toString() {
 		return " [location=" + location + ", alive=" + alive + "]";
 	}
-		
+	
+	public double distance(GenericGeoObject other) {
+		return location.distance3D(other.location);
 	}
+
+}

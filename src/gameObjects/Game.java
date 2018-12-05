@@ -1,10 +1,14 @@
-package GeoObjects;
+package gameObjects;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import GeoObjects.Fruit;
+import GeoObjects.Packman;
+import GeoObjects.Point3D;
 
 
 /**
@@ -15,15 +19,14 @@ import java.util.Set;
 public class Game {
 
 	private File file;
-	public Game afterPlayed;
+	public Game afterPlayed; //this is recursive
 	private String csvName;
 	private String[] title;
 	private int Type, id, Lat, Lon, Alt, speed, radius; ///What about the two numbers in the end ??
 	
-
-	Set <Fruit> fruits =new HashSet<Fruit>();
-	Set <Fruit> fruitsAlive;
-	Set <Packman> packmans =new HashSet<Packman>();
+	public Set <Fruit> fruits = new HashSet<Fruit>();
+	public Set <Fruit> fruitsAlive;
+	public Set <Packman> packmans = new HashSet<Packman>();
 
 	public void convert(String fileName) {
 		file = new File(fileName);

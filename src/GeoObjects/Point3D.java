@@ -233,6 +233,9 @@ public final static int DOWN = 6, UP = 7;
 		return Math.toDegrees(ans);
 	}
 	
+	public Point3D midPoint(Point3D other, double percent) {
+		//TODO
+	}
 	
 	
 	/** transform from radians to angles */

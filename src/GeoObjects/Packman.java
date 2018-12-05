@@ -1,5 +1,9 @@
 package GeoObjects;
 import java.util.Date;
+import java.util.Iterator;
+
+import gameObjects.Path;
+import gameObjects.PathPoint;
 
 
 /**
@@ -8,14 +12,14 @@ import java.util.Date;
  * @author Yoav and elad.
  *
  */
-public class Packman extends genericGeoObject 
+public class Packman extends GenericGeoObject 
 {
 
 	//	public Path path; /// After having the path class.
 
 	public int score;
 	public double speed,id,radius;
-
+	public Path path = new Path();
 
 	public Packman(Point3D location,double speed, double radius,double id) 
 	{
@@ -23,6 +27,7 @@ public class Packman extends genericGeoObject
 		this.speed = speed;
 		this.radius= radius;
 		this.id = id;
+		path.add(new PathPoint(location));
 
 	}
 
@@ -44,9 +49,29 @@ public class Packman extends genericGeoObject
 				+ super.toString() + "]";
 	}
 
+	public double eatDistance(Fruit other) {
+		return Math.max(0, distance(other) - radius);
+	}
 	
-	
-
-
+	public Point3D locationAtTime(double time) {
+		if (path.size() == 1)
+			return path.getFirst().getLocation();
+		
+		PathPoint lastPoint = null;
+		PathPoint nextPoint = null;
+		Iterator<PathPoint> pointIterator = path.iterator();
+		while (pointIterator.hasNext()) {
+			nextPoint = pointIterator.next();
+			if (nextPoint.getSeconds() == time)
+				return nextPoint.getLocation();
+			else if (nextPoint.getSeconds() < time)
+				lastPoint = nextPoint;
+			else {
+				double percent = (time - lastPoint.getSeconds()) / (nextPoint.getSeconds() - lastPoint.getSeconds());
+				return lastPoint.getLocation().midPoint(nextPoint.getLocation(),percent);
+			}
+		}
+		return path.getLast().getLocation();
+	}
 
 }
