@@ -25,9 +25,10 @@ public class Game {
 	private int Type, id, Lat, Lon, Alt, speed, radius; ///What about the two numbers in the end ??
 	
 	public Set <Fruit> fruits = new HashSet<Fruit>();
-	public Set <Fruit> fruitsAlive;
+	public Set <Fruit> fruitsAlive = new HashSet<Fruit>();
 	public Set <Packman> packmans = new HashSet<Packman>();
 
+	
 	public void convert(String fileName) {
 		file = new File(fileName);
 		csvName = fileName;

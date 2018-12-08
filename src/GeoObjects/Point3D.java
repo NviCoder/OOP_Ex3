@@ -233,7 +233,13 @@ public final static int DOWN = 6, UP = 7;
 		return Math.toDegrees(ans);
 	}
 	
-	public Point3D midPoint(Point3D other, double percent) {
+	/**
+	 * 
+	 * @param other
+	 * @param ratio 0<= ratio <= 1
+	 * @return point on the vector between this point to other, such that the vector split by the ratio   
+	 */
+	public Point3D midPoint(Point3D other, double ratio) {
 		//TODO
 	}
 	
