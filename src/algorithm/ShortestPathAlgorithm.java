@@ -1,6 +1,7 @@
 package algorithm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
@@ -30,6 +31,7 @@ public class ShortestPathAlgorithm {
 	}
 
 	public void onePackman(Packman packman) {
+		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
 		while (!game.fruitsAlive.isEmpty()) {
 			Fruit closest = findCloseFruit(packman);
 			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
@@ -41,8 +43,9 @@ public class ShortestPathAlgorithm {
 	public void multiPackmans() {
 		Packman nextPackman = null;
 		Fruit nextFruit = null;
+		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
 		double minTime;
-		int weight=0;
+		int weight=0, id=-1;
 		while (!game.fruitsAlive.isEmpty()) {
 			minTime = Double.MAX_VALUE;
 			for (Packman packman: game.packmans) {
@@ -53,10 +56,12 @@ public class ShortestPathAlgorithm {
 					nextFruit = closestFruit;
 					minTime = packman.getSeconds() + pathTime;
 					weight = closestFruit.getWeight();
+					id = closestFruit.getId();
 				}
 			}
 			Point3D eatingPoint = GpsAlgorithms.eatingPoint(nextPackman, nextFruit);
 			PathPoint nextPoint = new PathPoint(eatingPoint, minTime, weight);
+			nextPoint.setFruitEating(id);
 			nextPackman.path.add(nextPoint);
 			nextPackman.setSeconds(minTime + nextPackman.getSeconds());
 			game.fruitsAlive.remove(nextFruit);

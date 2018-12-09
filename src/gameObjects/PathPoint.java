@@ -7,6 +7,7 @@ public class PathPoint {
 	private Point3D location;
 	private double seconds = 0;
 	private int weight = 0;
+	int fruitEating = -1;
 	
 	public PathPoint(Point3D _location, double _seconds, int _weight) {
 		location = _location;
@@ -16,6 +17,10 @@ public class PathPoint {
 	
 	public PathPoint(Point3D _location) {
 		this(_location, 0, 0);
+	}
+	
+	public void setFruitEating(int id) {
+		fruitEating = id;
 	}
 	
 	public double getSeconds() {
@@ -28,6 +33,10 @@ public class PathPoint {
 	
 	public int getWeight() {
 		return weight;
+	}
+	
+	public String toString() {
+		return "location:" + location.toString() + ", seconds:" + seconds + ", fruitID:" + fruitEating;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import GeoObjects.Fruit;
@@ -17,9 +18,11 @@ import gameObjects.PathPoint;
 public class Game2kml {
 	
 	private Game game;
-	private StringBuilder kml;
+	private StringBuilder kml = new StringBuilder();
 	private String path;
 	private String name;
+	
+	private long startingTime;
 	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
 	
 	public void export(Game game, String path, String name) {
@@ -27,8 +30,6 @@ public class Game2kml {
 		this.path = path;
 		this.name = name;
 		
-		ShortestPathAlgorithm algo = new ShortestPathAlgorithm(game);
-		algo.multiPackmans();
 		write();
 		
 		PrintWriter pw = null;
@@ -49,15 +50,17 @@ public class Game2kml {
 	}
 	
 	private void write() {
+		startingTime = System.currentTimeMillis();
 		writeOpen();
 		writeFruits();
 		writePackmans();
 		writeEnd();
 	}
 
-	private void writeOpen() {
-		kml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"); 
-		kml.append("<kml xmlns=\"http://www.opengis.net/kml/2.2\"><Document><Style id=\"red\"><IconStyle><Icon><href>http://maps.google.com/mapfiles/ms/icons/red-dot.png</href></Icon></IconStyle></Style><Style id=\"yellow\"><IconStyle><Icon><href>http://maps.google.com/mapfiles/ms/icons/yellow-dot.png</href></Icon></IconStyle></Style><Style id=\"green\"><IconStyle><Icon><href>http://maps.google.com/mapfiles/ms/icons/green-dot.png</href></Icon></IconStyle></Style>");
+	private void writeOpen() {		
+		kml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">");
+		kml.append("<Document>\n");
 		kml.append("<name>"+name+"</name>\n");
 	}
 
@@ -72,17 +75,17 @@ public class Game2kml {
 			kml.append("]]></description><styleUrl>#red</styleUrl>\n");
 					
 			kml.append("<Point>\n");
-			kml.append("<coordinates>"+ fruit.getLocation().x()+", "+ fruit.getLocation().y()+", "+fruit.getLocation().z()+
+			kml.append("<coordinates>"+ fruit.getLocation().y()+", "+ fruit.getLocation().x()+", "+fruit.getLocation().z()+
 			"</coordinates>\n");
 			kml.append("<altitudeMode>clampToGround" + "</altitudeMode></Point>\n");
 			kml.append("</Placemark>\n");
 		}
-		kml.append("</folder>\n");
+		kml.append("</Folder>\n");
 	}
 
 	private void writePackmans() {
 		writeStyle();
-		kml.append("<Folder>\n");
+		kml.append("<Folder><name>packmans</name>\n");
 		
 		for (Packman packman: game.packmans) {
 			StringBuilder when = new StringBuilder();
@@ -91,13 +94,15 @@ public class Game2kml {
 			StringBuilder seconds = new StringBuilder();
 			
 			for (PathPoint point: packman.path) {
-				when.append("<when>"+"2010-05-28T02:02:09Z"+"</when>\n"); //change it!!!!
 				Point3D location = point.getLocation();
-				coord.append("<gx:coord>"+location.x()+" "+location.y()+" "+location.z()+"</gx:coord>\n");
+				String time = longToKmlTime(startingTime + (long)(1000000*point.getSeconds()));
+				when.append("<when>"+time+"</when>\n");
+				coord.append("<gx:coord>"+location.y()+" "+location.x()+" "+location.z()+700+"</gx:coord>\n");
 				weight.append("<gx:value>"+point.getWeight()+"</gx:value>\n");
 				seconds.append("<gx:value>"+point.getSeconds()+"</gx:value>\n");
 			}
 			
+			kml.append("<Placemark>");
 			kml.append("<name>packman"+packman.id+"</name>\n");
 			kml.append("<styleUrl>#multiTrack</styleUrl>\n");
 			kml.append("<gx:Track>\n");
@@ -105,7 +110,7 @@ public class Game2kml {
 			kml.append(when);
 			kml.append(coord);
 			
-			kml.append("<ExtendedData>/n");
+			kml.append("<ExtendedData>\n");
 			kml.append("<SchemaData schemaUrl=\"#schema\">\n");
 			
 			kml.append("<gx:SimpleArrayData name=\"we\">\n");
@@ -126,15 +131,7 @@ public class Game2kml {
 	}
 
 	private void writeStyle() {
-		kml.append("<LookAt>\r\n" + 
-				"      <gx:TimeSpan>\r\n" + 
-				"        <begin>2010-05-28T02:02:09Z</begin>\r\n" + 
-				"        <end>2010-05-28T02:02:56Z</end>\r\n" + 
-				"      </gx:TimeSpan>\r\n" + 
-				"      <longitude>-122.205544</longitude>\r\n" + 
-				"      <latitude>37.373386</latitude>\r\n" + 
-				"      <range>1300.000000</range>\r\n" + 
-				"    </LookAt>\r\n" + 
+		kml.append(
 				"    <Style id=\"track_n\">\r\n" + 
 				"      <IconStyle>\r\n" + 
 				"        <scale>.5</scale>\r\n" + 
@@ -236,14 +233,11 @@ public class Game2kml {
 				"      </LineStyle>\r\n" + 
 				"    </Style>\r\n" + 
 				"    <Schema id=\"schema\">\r\n" + 
-				"      <gx:SimpleArrayField name=\"heartrate\" type=\"int\">\r\n" + 
-				"        <displayName>Heart Rate</displayName>\r\n" + 
+				"      <gx:SimpleArrayField name=\"we\" type=\"int\">\r\n" + 
+				"        <displayName>Weight</displayName>\r\n" + 
 				"      </gx:SimpleArrayField>\r\n" + 
-				"      <gx:SimpleArrayField name=\"cadence\" type=\"int\">\r\n" + 
-				"        <displayName>Cadence</displayName>\r\n" + 
-				"      </gx:SimpleArrayField>\r\n" + 
-				"      <gx:SimpleArrayField name=\"power\" type=\"float\">\r\n" + 
-				"        <displayName>Power</displayName>\r\n" + 
+				"      <gx:SimpleArrayField name=\"sec\" type=\"double\">\r\n" + 
+				"        <displayName>Seconds</displayName>\r\n" + 
 				"      </gx:SimpleArrayField>\r\n" + 
 				"    </Schema>");
 	}
@@ -251,6 +245,11 @@ public class Game2kml {
 	private void writeEnd() {
 		kml.append("</Document>");
 		kml.append("</kml>");
+	}
+	
+	private String longToKmlTime(long utc) {		
+		java.util.Date date = new Date(utc);
+		return format.format(date);
 	}
 
 }

@@ -23,7 +23,7 @@ import algorithm.ShortestPathAlgorithm;
 public class Game {
 
 	public Set <Fruit> fruits = new HashSet<Fruit>();
-	public Set <Fruit> fruitsAlive = new HashSet<Fruit>();
+	public Set <Fruit> fruitsAlive;
 	public Set <Packman> packmans = new HashSet<Packman>();
 
 
