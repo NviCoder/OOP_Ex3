@@ -97,16 +97,14 @@ public class MainWindow extends JFrame implements MouseListener
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addFruit = !addFruit;
-				addFruitItem.setEnabled(addFruit);
-				addPackmanItem.setEnabled(false);
+				addPackman = false;
 			}
 		});
 		addPackmanItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				addPackman = !addPackman;
-				addPackmanItem.setEnabled(addPackman);
-				addFruitItem.setEnabled(false);
+				addFruit = false;
 			}
 		});
 		
@@ -176,6 +174,40 @@ public class MainWindow extends JFrame implements MouseListener
 		Bit head = mc.gps2Bit(gps0, map.height(), map.widht());
 		Bit tail = mc.gps2Bit(gps1, map.height(), map.widht());
 		return new Line(head, tail);
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void main(String[] args) {
+		Map m = new Map("E:\\yoav\\מדעי המחשב\\סמסטר א\\מונחה עצמים\\מטלה3\\Ex3 (2)\\Ex3\\Ariel1.png");
+		System.out.println("height:" + m.height() + " widht:" + m.widht());
+		
+		MainWindow window = new MainWindow(m);
+		window.setVisible(true);
+		window.setSize(window.map.widht(),window.map.height());
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }
