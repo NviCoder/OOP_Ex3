@@ -233,16 +233,6 @@ public final static int DOWN = 6, UP = 7;
 		return Math.toDegrees(ans);
 	}
 	
-	/**
-	 * 
-	 * @param other
-	 * @param ratio 0<= ratio <= 1
-	 * @return point on the vector between this point to other, such that the vector split by the ratio   
-	 */
-	public Point3D midPoint(Point3D other, double ratio) {
-		//TODO
-	}
-	
 	
 	/** transform from radians to angles */
 	public static double r2d(double a) { return Math.toDegrees(a);}

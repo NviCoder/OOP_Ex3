@@ -6,14 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 
 import convertor.Csv2Game;
+import convertor.Game2Csv;
 
-public class ImportCsv implements ActionListener {
-	
+public class ExportCsv implements ActionListener {
+
 	private MainWindow gui;
-	private Csv2Game convertor;
+	private Game2Csv convertor;
 	private final JFileChooser fc = new JFileChooser();
 
-	public ImportCsv(MainWindow gui) {
+	public ExportCsv(MainWindow gui) {
 		super();
 		this.gui = gui;
 	}

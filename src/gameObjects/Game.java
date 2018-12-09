@@ -3,12 +3,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.AlgorithmParameterGenerator;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
 
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
+import algorithm.ShortestPathAlgorithm;
 
 
 /**
@@ -23,12 +27,28 @@ public class Game {
 	private String csvName;
 	private String[] title;
 	private int Type, id, Lat, Lon, Alt, speed, radius; ///What about the two numbers in the end ??
-	
+
 	public Set <Fruit> fruits = new HashSet<Fruit>();
 	public Set <Fruit> fruitsAlive = new HashSet<Fruit>();
 	public Set <Packman> packmans = new HashSet<Packman>();
 
-	
+
+	public double findShortestPath() {
+		ShortestPathAlgorithm algorithm = new ShortestPathAlgorithm(this);
+		algorithm.multiPackmans();
+		return timeForGame();
+	}
+
+	public double timeForGame() {
+		double maxTime = -1;
+		for (Packman packman: packmans) {
+			double currentTime = packman.path.getLast().getSeconds();
+			if (currentTime > maxTime)
+				maxTime = currentTime;
+		}
+		return maxTime;
+	}
+
 	public void convert(String fileName) {
 		file = new File(fileName);
 		csvName = fileName;
@@ -97,7 +117,7 @@ public class Game {
 		}	
 
 	}
-	
+
 	private void addData(String[] csvRow)
 	{
 		Point3D p = new Point3D(Double.parseDouble(csvRow[Lat]),Double.parseDouble(csvRow[Lon]),Double.parseDouble(csvRow[Alt]));
@@ -106,17 +126,17 @@ public class Game {
 		else
 			fruits.add(new Fruit(p,Double.parseDouble(csvRow[speed]),Double.parseDouble(csvRow[id])));
 	}
-	
+
 	public static void main(String[] args) {
 		String s = "D:\\aeladAriel\\secondYear\\Oop\\Ex3\\data\\game_1543685769754.csv";
 		Game first = new Game();
 		first.convert(s);
 		System.out.println(first.packmans);
 		System.out.println(first.fruits);
-//		System.out.println();
-//		System.out.println(first.packmans.toString());
+		//		System.out.println();
+		//		System.out.println(first.packmans.toString());
 	}
-	
+
 
 
 }

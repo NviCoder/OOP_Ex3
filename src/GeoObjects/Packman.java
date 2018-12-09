@@ -2,6 +2,7 @@ package GeoObjects;
 import java.util.Date;
 import java.util.Iterator;
 
+import Coords.MyCoords;
 import gameObjects.Path;
 import gameObjects.PathPoint;
 
@@ -30,7 +31,7 @@ public class Packman extends GenericGeoObject
 		path.add(new PathPoint(location));
 
 	}
-
+	
 	public double getSpeed() {
 		return speed;
 	}
@@ -67,8 +68,8 @@ public class Packman extends GenericGeoObject
 			else if (nextPoint.getSeconds() < time)
 				lastPoint = nextPoint;
 			else {
-				double percent = (time - lastPoint.getSeconds()) / (nextPoint.getSeconds() - lastPoint.getSeconds());
-				return lastPoint.getLocation().midPoint(nextPoint.getLocation(),percent);
+				double ratio = (time - lastPoint.getSeconds()) / (nextPoint.getSeconds() - lastPoint.getSeconds());
+				return new MyCoords().midPoint(lastPoint.getLocation(), nextPoint.getLocation(), ratio);
 			}
 		}
 		return path.getLast().getLocation();

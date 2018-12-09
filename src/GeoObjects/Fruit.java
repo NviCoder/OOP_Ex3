@@ -6,18 +6,14 @@ package GeoObjects;
  *
  */
 public class Fruit extends GenericGeoObject {
-	public double weight,id;
+	public double id;
 	
 	public Fruit(Point3D location, double weight,double id) 
 	{
 		super(location);
-		this.weight =weight;
+
 		this.id = id;
 		
-	}
-
-	public double getWeight() {
-		return weight;
 	}
 
 	public double getId() {
@@ -26,7 +22,7 @@ public class Fruit extends GenericGeoObject {
 
 	@Override
 	public String toString() {
-		return "Fruit [weight=" + weight + ", id=" + id + "," + super.toString() + "]";
+		return "Fruit [id=" + id + "," + super.toString() + "]";
 	}
 
 	
