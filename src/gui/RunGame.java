@@ -23,6 +23,8 @@ public class RunGame implements ActionListener {
 		gui.runPackmans = new HashSet<>(gui.game.packmans);
 		gui.lines.clear();
 		gui.tempLines.clear();
+		gui.seconds = 0;
+		gui.totalWeight = 0;
 		double endTime = gui.game.findShortestPath();
 
 		for (int time=0; time < endTime+1; time++ ) {
@@ -34,6 +36,7 @@ public class RunGame implements ActionListener {
 					PathPoint next = packman.path.getFirst();
 					if (next.getSeconds() <= time) {
 						gui.lines.add(gui.addLine(first.getLocation(), next.getLocation()));
+						gui.totalWeight += next.getWeight();
 						first = next;
 						packman.path.removeFirst();
 						packman.setLocation(next.getLocation());
@@ -48,6 +51,7 @@ public class RunGame implements ActionListener {
 					}
 				}
 			}
+			gui.seconds++;
 			gui.repaint();
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);
 			try {

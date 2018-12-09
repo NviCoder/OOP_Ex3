@@ -32,8 +32,8 @@ public class ShortestPathAlgorithm {
 	public void onePackman(Packman packman) {
 		while (!game.fruitsAlive.isEmpty()) {
 			Fruit closest = findCloseFruit(packman);
-			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest));
-			packman.path.add(nextPoint); //must change it
+			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
+			packman.path.add(nextPoint);
 			game.fruitsAlive.remove(closest);
 		}
 	}
@@ -42,6 +42,7 @@ public class ShortestPathAlgorithm {
 		Packman nextPackman = null;
 		Fruit nextFruit = null;
 		double minTime;
+		int weight=0;
 		while (!game.fruitsAlive.isEmpty()) {
 			minTime = Double.MAX_VALUE;
 			for (Packman packman: game.packmans) {
@@ -51,10 +52,11 @@ public class ShortestPathAlgorithm {
 					nextPackman = packman;
 					nextFruit = closestFruit;
 					minTime = packman.getSeconds() + pathTime;
+					weight = closestFruit.getWeight();
 				}
 			}
 			Point3D eatingPoint = GpsAlgorithms.eatingPoint(nextPackman, nextFruit);
-			PathPoint nextPoint = new PathPoint(eatingPoint, minTime);
+			PathPoint nextPoint = new PathPoint(eatingPoint, minTime, weight);
 			nextPackman.path.add(nextPoint);
 			nextPackman.setSeconds(minTime + nextPackman.getSeconds());
 			game.fruitsAlive.remove(nextFruit);

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -28,7 +29,7 @@ import convertor.Csv2Game;
 import gameObjects.Game;
 import gameObjects.Path;
 import gameObjects.PathPoint;
-import guiObjects.Bit;
+import guiObjects.Pixel;
 import guiObjects.Line;
 import guiObjects.Map;
 
@@ -42,11 +43,13 @@ public class MainWindow extends JFrame implements MouseListener
 
 	public boolean addFruit = false;
 	public boolean addPackman = false;
-	
+
 	public HashSet<Line> lines = new HashSet<>();
 	public HashSet<Line> tempLines = new HashSet<>();
 	public Set <Packman> runPackmans = game.packmans;
 
+	public double seconds = 0;
+	public int totalWeight = 0;
 
 	final JFileChooser fc = new JFileChooser();
 	final MyCoords mc = new MyCoords();
@@ -81,17 +84,20 @@ public class MainWindow extends JFrame implements MouseListener
 		Menu menuRun = new Menu("run");
 		MenuItem realtime = new MenuItem("real time");
 		MenuItem endPoint = new MenuItem("end point");
+		MenuItem exportToKml = new MenuItem("export game to kml");
 		menuBar.add(menuRun);
 		menuRun.add(realtime);
 		menuRun.add(endPoint);
+		menuRun.add(exportToKml);
 
 		this.setMenuBar(menuBar);
 
 		//set listeners for the menu bar
-		ImportCsv importer = new ImportCsv(this);
-		importCsvItem.addActionListener(importer);
-		ExportCsv exporter = new ExportCsv(this);
-		exportToCsvItem.addActionListener(exporter);
+		importCsvItem.addActionListener(new ImportCsv(this));
+		exportToCsvItem.addActionListener(new ExportCsv(this));
+		exportToKml.addActionListener(new ExportKml(this));
+		realtime.addActionListener(new RunGame(this));
+		endPoint.addActionListener(new EndGameListener(this));
 
 		addFruitItem.addActionListener(new ActionListener() {
 			@Override
@@ -107,27 +113,6 @@ public class MainWindow extends JFrame implements MouseListener
 				addFruit = false;
 			}
 		});
-		
-		endPoint.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				game.findShortestPath();
-				
-				runPackmans = new HashSet<>(game.packmans);
-				for (Packman packman: runPackmans) {
-					packman.setLocation(packman.path.getLast().getLocation());
-					PathPoint last = packman.path.getLast();
-					PathPoint current = packman.path.pollFirst();
-					while (current != last) {
-						PathPoint next = packman.path.pollFirst();
-						lines.add(addLine(current.getLocation(), next.getLocation()));
-						current = next;
-					}
-				}
-				repaint();
-			}
-		});
 	}
 
 	public void paint(Graphics g)
@@ -136,74 +121,91 @@ public class MainWindow extends JFrame implements MouseListener
 
 		//draw fruits
 		for (Fruit fruit: game.fruits) {
-			Bit bit = mc.gps2Bit(fruit.getLocation(), (int)(map.height()*proportionH), (int)(map.widht()*proportionW));
+			Pixel bit = map.gps2pixel(fruit.getLocation());
+			bit.setProportion(proportionW, proportionH);
 			g.setColor(Color.red);
-			g.fillOval(bit.x()+2, bit.y()+2, bit.x()-2, bit.x()-2); //check it! change to image of fruit??
+			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of fruit??
 		}
-		
+
 		//draw packmans
 		for (Fruit fruit: game.fruits) {
-			Bit bit = mc.gps2Bit(fruit.getLocation(), (int)(map.height()*proportionH), (int)(map.widht()*proportionW));
+			Pixel bit = map.gps2pixel(fruit.getLocation());
+			bit.setProportion(proportionW, proportionH);
 			g.setColor(Color.yellow);
-			g.fillOval(bit.x()+2, bit.y()+2, bit.x()-2, bit.x()-2); //check it! change to image of packman??
+			g.fillOval(bit.x(), bit.y(), 2, 2); //check it! change to image of packman??
 		}
-		
-		
+
+
 		//draw pathes
-		for (Line line: lines)
-			g.drawLine(line.getHead().x(), line.getHead().y(), line.getTail().x(), line.getTail().y());
-		for (Line line: tempLines)
-			g.drawLine(line.getHead().x(), line.getHead().y(), line.getTail().x(), line.getTail().y());
-		
+		for (Line line: lines) {
+			Pixel head = line.getHead();
+			head.setProportion(proportionW, proportionH);
+			Pixel tail= line.getTail();
+			tail.setProportion(proportionW, proportionH);
+			g.drawLine(head.x(), head.y(), tail.x(), tail.y());
+		}
+		for (Line line: tempLines) {
+			Pixel head = line.getHead();
+			head.setProportion(proportionW, proportionH);
+			Pixel tail= line.getTail();
+			tail.setProportion(proportionW, proportionH);
+			g.drawLine(head.x(), tail.x(), head.y(), tail.y());
+		}
+
 	}
 
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
-		Bit bit = new Bit(arg.getX(), arg.getY());
+		Pixel bit = new Pixel(arg.getX(), arg.getY());
+		System.out.println(bit);
+		bit.removeProportion(proportionW, proportionH);
 		if (addFruit) {
-			Fruit fruit = new Fruit(mc.Bit2gps(bit, map.height(), map.widht()), game.fruits.size()+1);
+			Fruit fruit = new Fruit(map.pixel2gps(bit), 1,  game.fruits.size()+1);
 			game.fruits.add(fruit);
 			repaint();
 		}
-		if (addPackman)
+		if (addPackman) {
 			//TODO
+			AddPackman adder = new AddPackman(this, map.pixel2gps(bit), game.getNextPackmanID());
+			repaint();
+		}
 	}
-	
+
 	public Line addLine(Point3D gps0, Point3D gps1) {
-		Bit head = mc.gps2Bit(gps0, map.height(), map.widht());
-		Bit tail = mc.gps2Bit(gps1, map.height(), map.widht());
+		Pixel head = map.gps2pixel(gps0);
+		Pixel tail = map.gps2pixel(gps1);
 		return new Line(head, tail);
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public static void main(String[] args) {
 		Map m = new Map("E:\\yoav\\מדעי המחשב\\סמסטר א\\מונחה עצמים\\מטלה3\\Ex3 (2)\\Ex3\\Ariel1.png");
 		System.out.println("height:" + m.height() + " widht:" + m.widht());
-		
+
 		MainWindow window = new MainWindow(m);
 		window.setVisible(true);
 		window.setSize(window.map.widht(),window.map.height());

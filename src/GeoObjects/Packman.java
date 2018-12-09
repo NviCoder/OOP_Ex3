@@ -18,16 +18,17 @@ public class Packman extends GenericGeoObject
 
 	//	public Path path; /// After having the path class.
 
-	public int score;
-	public double speed,id,radius;
+	public int score, id; //we don't use it
+	public double speed,radius,weight;
 	public Path path = new Path();
 
-	public Packman(Point3D location,double speed, double radius,double id) 
+	public Packman(Point3D location,double speed, double radius,int id) 
 	{
 		super(location);
 		this.speed = speed;
 		this.radius= radius;
 		this.id = id;
+		this.weight=0;
 		path.add(new PathPoint(location));
 
 	}
@@ -73,6 +74,10 @@ public class Packman extends GenericGeoObject
 			}
 		}
 		return path.getLast().getLocation();
+	}
+
+	public int getID() {
+		return this.id;
 	}
 
 }

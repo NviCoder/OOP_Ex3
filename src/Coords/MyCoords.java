@@ -1,7 +1,7 @@
 package Coords;
 import java.util.Arrays;
 
-import guiObjects.Bit;
+import guiObjects.Pixel;
 import GeoObjects.Point3D;
 
 
@@ -97,16 +97,13 @@ public class MyCoords implements coords_converter {
 	 * @return point on the vector between this point to other, such that the vector split by the ratio   
 	 */
 	public Point3D midPoint(Point3D gps0, Point3D gps1, double ratio) {
-		//TODO
+		Point3D vector = vector3D(gps0, gps1);
+		Point3D ratioVector = ratioVector(vector, ratio); 
+		return add(gps0, ratioVector);
 	}
 	
-	public Bit gps2Bit (Point3D gps, int height, int widht) {
-		//TODO
-		
+	public Point3D ratioVector(Point3D vector, double ratio) {
+		return new Point3D(ratio*vector.x(), ratio*vector.y(), ratio*vector.z());
 	}
-
-	public Point3D Bit2gps (Bit bit, int height, int widht) {
-		//TODO
-	}
-
+	
 }

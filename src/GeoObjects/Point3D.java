@@ -65,6 +65,10 @@ public class Point3D implements Geom_element, Serializable
 		double t = dx*dx+dy*dy+dz*dz;
 		return Math.sqrt(t);
 	}
+	
+	public double length() {
+		return this.distance3D(0, 0, 0);
+	}
 
 	public boolean equals(Point3D p2)
 	{
@@ -232,7 +236,6 @@ public final static int DOWN = 6, UP = 7;
 		ans = Math.atan2((p._z+h-_z), this.distance2D(p));
 		return Math.toDegrees(ans);
 	}
-	
 	
 	/** transform from radians to angles */
 	public static double r2d(double a) { return Math.toDegrees(a);}

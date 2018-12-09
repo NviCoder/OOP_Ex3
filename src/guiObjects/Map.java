@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import Coords.MyCoords;
 import GeoObjects.Point3D;
 
 public class Map {
@@ -16,6 +17,7 @@ public class Map {
 	public final Point3D ne;
 	public final Point3D sw;
 	public final Point3D se;
+	MyCoords mc = new MyCoords();
 
 	public Map(String imagePath) { 
 		try {
@@ -25,10 +27,10 @@ public class Map {
 			e.printStackTrace();
 		}
 		
-		nw = new Point3D(35.202377777777784, 32.10575, 0);
-		ne = new Point3D(35.212561111111114, 32.10575, 0);
-		sw = new Point3D(35.20266388888889, 32.1028, 0);
-		se = new Point3D(35.21176944444445, 32.1028, 0);
+		nw = new Point3D(32.10575, 35.202377777777784, 0);
+		ne = new Point3D(32.10575, 35.212561111111114, 0);
+		sw = new Point3D(32.10280, 35.20266388888889, 0);
+		se = new Point3D(32.10280, 35.21176944444445, 0);
 	}
 	
 	public int height() {
@@ -39,27 +41,44 @@ public class Map {
 		return myImage.getWidth();
 	}
 	
-	public Bit gps2Bit(Point3D point) { //very bad function!!
-		double heightGPS = nw.y() - sw.y();
-		double disY = nw.y() - point.y();
-		double fractionNorth = disY / heightGPS; 
-		double y = fractionNorth * height();
+	public Pixel gps2pixel(Point3D point) { //very bad function!!
+		double imageLatD = nw.x() - se.x();
+		double currentLatD = nw.x() - point.x();
+		double fractionNorth = currentLatD / imageLatD; 
+		double latpixel = fractionNorth * height();
 		
-		double eastLen = se.x() - ne.x();
-		double westLen = sw.x() - nw.x();
+		Point3D leftMergin = mc.midPoint(nw, sw, fractionNorth);
+		Point3D rightMergin = mc.midPoint(ne, se, fractionNorth);
 		
-		double east = ne.x()+ eastLen*fractionNorth;
-		double west = nw.x()+ westLen*fractionNorth;
-		double fractionEast = (point.x()-east)/(west - east);
-		double x = fractionEast * widht();
+		double currentImageLonD = rightMergin.y() - leftMergin.y();
+		double currentLonD = point.y() - leftMergin.y();
+		double fractionWest = currentLonD / currentImageLonD;
+		double lonpixel = fractionWest * widht();
 
-		return new Bit((int)x,(int)y);
+		return new Pixel((int)lonpixel, (int)latpixel);
 	}
+
+	public Point3D pixel2gps (Pixel pixel) {
+		//TODO
+		double ratioH = (double)pixel.y() / height();
+		double ratioW = (double)pixel.x() / widht();
+		double imageLatD = nw.x() - se.x();
+		double lat = nw.x() - ratioH * imageLatD;
+		
+		Point3D leftMergin = mc.midPoint(nw, sw, ratioH);
+		Point3D rightMergin = mc.midPoint(ne, se, ratioH);
+		
+		double imageLonD = rightMergin.y() - leftMergin.y();
+		double lon = leftMergin.y() + ratioW * imageLonD;
+		
+		return new Point3D(lat, lon, 0);
+	}
+
 	
 	public static void main(String[] args) {
 		Map m = new Map("E:\\yoav\\מדעי המחשב\\סמסטר א\\מונחה עצמים\\מטלה3\\Ex3 (2)\\Ex3\\Ariel1.png");
 		System.out.println("height:" + m.height() + " widht:" + m.widht());
-		Bit b = m.gps2Bit(new Point3D(35.21, 32.104));
+		Pixel b = m.gps2pixel(new Point3D(32.10300, 35.205));
 		System.out.println(b);
 		for (int i=0; i<5; i++)
 			for (int j=0; j<5; j++)

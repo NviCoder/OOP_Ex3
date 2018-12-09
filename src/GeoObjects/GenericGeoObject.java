@@ -1,7 +1,7 @@
 package GeoObjects;
 
 import Coords.MyCoords;
-import guiObjects.Bit;
+import guiObjects.Pixel;
 
 public class GenericGeoObject {
 

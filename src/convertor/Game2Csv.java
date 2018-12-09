@@ -1,5 +1,12 @@
 package convertor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import GeoObjects.Fruit;
+import GeoObjects.Packman;
+import GeoObjects.Point3D;
 import gameObjects.Game;
 
 public class Game2Csv {
@@ -7,16 +14,55 @@ public class Game2Csv {
 	private Game game;
 	private String path;
 	private String fileName;
+	StringBuilder csv;
 	
-	public Game2Csv(Game game, String path, String fileName) {
+	public void export(Game game, String path, String fileName) {
 		this.game = game;
 		this.path = path;
 		this.fileName = fileName;
+		
+		create();
+		write();
 	}
 	
-	public void export() {
-		StringBuilder csv = new StringBuilder();
-		//TODO
+	private void create() {
+		csv = new StringBuilder();
+		csv.append("Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+game.packmans.size()+","+game.fruits.size() + "\n");
+		
+		for (Packman packman: game.packmans)
+			appendRow(true, packman.getID(), packman.getLocation(), packman.getSpeed(), packman.getradius());
+		for (Fruit fruit: game.fruits)
+			appendRow(false, fruit.getId(), fruit.getLocation(), fruit.getWeight(), -1);
+	}
+	
+	private void appendRow(boolean isPackman, int id, Point3D point, double speed_weight, double radius) {
+		if (isPackman)
+			csv.append("p,");
+		else
+			csv.append("f,");
+		csv.append(id+","+ point.x()+","+ point.y()+","+ point.z()+","+ speed_weight+",");
+		if (isPackman)
+			csv.append(radius+",,\n");
+		else
+			csv.append(",,,\n");
+	}
+	
+	private void write() {
+		PrintWriter pw = null;
+		
+		try 
+		{
+			pw = new PrintWriter(new File(path + "\\" + fileName + ".csv"));
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+			return;
+		}
+	
+		pw.write(csv.toString());
+		pw.close();
+		System.out.println("done!"); // printing in the console a "done" message.
 	}
 	
 }

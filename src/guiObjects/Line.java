@@ -2,20 +2,20 @@ package guiObjects;
 
 public class Line {
 
-	Bit head;
-	Bit tail;
+	Pixel head;
+	Pixel tail;
 	
-	public Line(Bit head, Bit tail) {
+	public Line(Pixel head, Pixel tail) {
 		this.head = head;
 		this.tail = tail;
 	}
 
-	public Bit getHead() {
+	public Pixel getHead() {
 		return head;
 	}
 
 
-	public Bit getTail() {
+	public Pixel getTail() {
 		return tail;
 	}
 	
