@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,96 +15,82 @@ import javax.swing.Popup;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 
-public class AddPackman extends Popup {
+public class AddPackman extends JFrame {
 
 	MainWindow gui;
 	public Point3D locatoin;
 	public int id;
 
+	public JLabel labelEvent = new JLabel();
+	public JTextField speedText = new JTextField("");
+	public JTextField radiusText = new JTextField("");
+
 	public AddPackman(MainWindow gui, Point3D locatoin, int id) {
 		this.gui = gui;
 		this.id = id;
 		this.locatoin = locatoin;
-		InitPopUp();
+		Init();
 	}
 
-	private void InitPopUp() {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-		frame.setSize(400, 300);
-
-		frame.getContentPane().setLayout(new FlowLayout());
-		JTextField speedText = new JTextField("Enter speed");
-		JTextField radiusText = new JTextField("Enter radius");
-		frame.getContentPane().add(speedText);
-		frame.getContentPane().add(radiusText);
+	private void Init() {
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setSize(250, 200);
+		setLayout(new GridLayout(3,2));
 
 
-
-		//submit button
-		JButton b=new JButton("Submit");    
-		    
-		JLabel labelSpeed = new JLabel();		
+		JLabel labelSpeed = new JLabel();
 		labelSpeed.setText("Enter Speed:");
 		labelSpeed.setBounds(10, 10, 100, 100);
-		
-		JLabel labelRadius = new JLabel();		
-		labelRadius.setText("Enter Radius:");
+		speedText.setBounds(10, 10, 100, 100);
+		speedText.setText("");
+
+		add(labelSpeed);
+		add(speedText);
+
+
+
+		JLabel labelRadius = new JLabel();
+		labelRadius.setText("Enter radius:");
 		labelRadius.setBounds(10, 10, 100, 100);
+		radiusText.setBounds(10, 10, 100, 100);
+		radiusText.setText("");
 
-		//empty label which will show event after button clicked
-		JLabel labelEvent = new JLabel();
-		labelSpeed.setBounds(10, 110, 200, 100);
+		add(labelRadius);
+		add(radiusText);
 
-		
-		//textfield to enter speed
-		JTextField speedField= new JTextField();
-		speedField.setBounds(110, 50, 130, 30);
-		
-		//textfield to enter radius
-		JTextField radiusField= new JTextField();
-		radiusField.setBounds(110, 50, 130, 30);
 
-		//add to frame
-		frame.add(labelSpeed);
-		frame.add(labelRadius); 
-		frame.add(labelEvent);
-		
-		
-		frame.add(speedField);
-		frame.add(radiusField);
-		frame.setSize(300,300);    
 
-		JButton add = new JButton("add");
-		add.setBounds(100,100,140, 40);
-		add.addActionListener(new ActionListener() {
+		labelEvent.setText("");
+		add(labelEvent);
+
+		JButton submit = new JButton("Submit");    
+		submit.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean goodInput = true;
 				double speed = -1, radius = -1;
 				try {
-					String speedStr = speedField.getText();
+					String speedStr = speedText.getText();
 					speed = Double.parseDouble(speedStr);
-					String radiusStr = radiusField.getText();
+					String radiusStr = radiusText.getText();
 					radius = Double.parseDouble(radiusStr);
+					if (speed < 0 || radius < 0)
+						labelEvent.setText("try again");
+					else {
+						gui.game.packmans.add(new Packman(locatoin, speed, radius, id));
+						gui.repaint();
+						setVisible(false);
+					}
 				}
 				catch (Exception ex) {
-					//do nothing
-				}
-				if (speed < 0 || radius < 0)
 					labelEvent.setText("try again");
-				else {
-					gui.game.packmans.add(new Packman(locatoin, speed, radius, id));
-					frame.setVisible(false);
 				}
 			}
 		});
 
-		frame.add(add);
-		frame.setLayout(null);   
-		frame.setVisible(true);
-	}
+		add(submit);
 
+		setVisible(true);
+	}
 
 }

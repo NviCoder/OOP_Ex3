@@ -128,15 +128,16 @@ public class MainWindow extends JFrame implements MouseListener
 		}
 
 		//draw packmans
-		for (Fruit fruit: game.fruits) {
-			Pixel bit = map.gps2pixel(fruit.getLocation());
+		for (Packman packman: game.packmans) {
+			Pixel bit = map.gps2pixel(packman.getLocation());
 			bit.setProportion(proportionW, proportionH);
 			g.setColor(Color.yellow);
-			g.fillOval(bit.x(), bit.y(), 2, 2); //check it! change to image of packman??
+			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of packman??
 		}
 
 
 		//draw pathes
+		g.setColor(Color.green);
 		for (Line line: lines) {
 			Pixel head = line.getHead();
 			head.setProportion(proportionW, proportionH);
@@ -157,18 +158,17 @@ public class MainWindow extends JFrame implements MouseListener
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
-		Pixel bit = new Pixel(arg.getX(), arg.getY());
-		System.out.println(bit);
-		bit.removeProportion(proportionW, proportionH);
+		Pixel pixel = new Pixel(arg.getX(), arg.getY());
+		System.out.println(pixel);
+		pixel.removeProportion(proportionW, proportionH);
 		if (addFruit) {
-			Fruit fruit = new Fruit(map.pixel2gps(bit), 1,  game.fruits.size()+1);
+			Fruit fruit = new Fruit(map.pixel2gps(pixel), 1,  game.fruits.size()+1);
 			game.fruits.add(fruit);
 			repaint();
 		}
 		if (addPackman) {
 			//TODO
-			AddPackman adder = new AddPackman(this, map.pixel2gps(bit), game.getNextPackmanID());
-			repaint();
+			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel), game.getNextPackmanID());
 		}
 	}
 
