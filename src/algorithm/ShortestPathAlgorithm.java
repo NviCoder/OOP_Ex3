@@ -1,3 +1,5 @@
+
+
 package algorithm;
 
 import java.util.ArrayList;
@@ -41,6 +43,13 @@ public class ShortestPathAlgorithm {
 	}
 
 	public void multiPackmans() {
+		PathPoint firstPoint;
+		for (Packman packman: game.packmans){ //reset pathes
+			firstPoint = packman.path.getFirst(); 
+			packman.path.clear();
+			packman.path.add(firstPoint);
+		}
+		
 		Packman nextPackman = null;
 		Fruit nextFruit = null;
 		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
