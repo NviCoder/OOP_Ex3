@@ -33,7 +33,8 @@ public class AddPackman extends JFrame {
 	}
 
 	private void Init() {
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(250, 200);
 		setLayout(new GridLayout(3,2));
 

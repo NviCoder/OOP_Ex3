@@ -30,7 +30,10 @@ public class Game2kml {
 		this.path = path;
 		this.name = name;
 		
-		write();
+		ShortestPathAlgorithm algo = new ShortestPathAlgorithm(game);
+		algo.multiPackmans();
+		
+		writeData();
 		
 		PrintWriter pw = null;
 		
@@ -49,7 +52,7 @@ public class Game2kml {
 		System.out.println("done!"); // printing in the console a "done" message.
 	}
 	
-	private void write() {
+	private void writeData() {
 		startingTime = System.currentTimeMillis();
 		writeOpen();
 		writeFruits();

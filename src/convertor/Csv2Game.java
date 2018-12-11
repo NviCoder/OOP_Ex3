@@ -25,6 +25,7 @@ public class Csv2Game {
 		return game;
 	}
 	public Game convert(File f) {
+		file = f;
 		csvName = f.getName();
 		createGame();
 		return game;
@@ -98,16 +99,6 @@ public class Csv2Game {
 			game.packmans.add(new Packman(p,Integer.parseInt(csvRow[speed]),Double.parseDouble(csvRow[radius]),Integer.parseInt(csvRow[id])));
 		else
 			game.fruits.add(new Fruit(p,Integer.parseInt(csvRow[speed]),Integer.parseInt(csvRow[id])));
-	}
-
-	public static void main(String[] args) {
-		Csv2Game convertor = new Csv2Game();
-		String s = "D:\\aeladAriel\\secondYear\\Oop\\Ex3\\data\\game_1543685769754.csv";
-		Game first = convertor.convert(s);
-		System.out.println(first.packmans);
-		System.out.println(first.fruits);
-		//		System.out.println();
-		//		System.out.println(first.packmans.toString());
 	}
 
 }

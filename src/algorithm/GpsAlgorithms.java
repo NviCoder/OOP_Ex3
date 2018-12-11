@@ -20,7 +20,8 @@ public class GpsAlgorithms {
 	
 	public static double eatingDistance(Packman packman, Fruit fruit) {
 		Point3D eatingPoint = eatingPoint(packman, fruit);
-		return packman.getLocation().distance3D(eatingPoint);
+		MyCoords mc = new MyCoords();
+		return mc.distance3d(packman.getLocation(), eatingPoint);
 	}
 	
 	public static double eatingTime(Packman packman, Fruit fruit) {

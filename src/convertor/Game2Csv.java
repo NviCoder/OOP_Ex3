@@ -22,6 +22,7 @@ public class Game2Csv {
 		this.fileName = fileName;
 		
 		create();
+		csv.append("\r");
 		write();
 	}
 	

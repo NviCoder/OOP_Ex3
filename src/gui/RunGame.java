@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
@@ -12,25 +13,27 @@ import gameObjects.PathPoint;
 public class RunGame implements ActionListener {
 
 	private MainWindow gui;
+	private Set <Packman> runPackmans;
+
 
 	public RunGame(MainWindow gui) {
 		super();
 		this.gui = gui;
+		gui.addFruit = false;
+		gui.addPackman = false;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		gui.runPackmans = new HashSet<>(gui.game.packmans);
+		runPackmans = new HashSet<>(gui.game.packmans);
 		gui.lines.clear();
-		gui.tempLines.clear();
 		gui.seconds = 0;
 		gui.totalWeight = 0;
 		double endTime = gui.game.findShortestPath();
 
 		for (int time=0; time < endTime+1; time++ ) {
 			long processingStart = System.currentTimeMillis();
-			gui.tempLines.clear();
-			for (Packman packman: gui.runPackmans) {
+			for (Packman packman: runPackmans) {
 				PathPoint first = packman.path.pollFirst();
 				while (first != null && !packman.path.isEmpty()) {
 					PathPoint next = packman.path.getFirst();
@@ -44,7 +47,6 @@ public class RunGame implements ActionListener {
 					else {
 						double ratio = (time - first.getSeconds()) / (next.getSeconds() - first.getSeconds());
 						Point3D mid = gui.mc.midPoint(first.getLocation(), next.getLocation(), ratio);
-						gui.tempLines.add(gui.addLine(first.getLocation(), mid));
 						packman.setLocation(mid);
 						packman.path.addFirst(first);
 						break;
@@ -52,7 +54,7 @@ public class RunGame implements ActionListener {
 				}
 			}
 			gui.seconds++;
-			gui.repaint();
+			System.out.println("time: "+time);
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);
 			try {
 				Thread.sleep(processTime);
@@ -60,13 +62,8 @@ public class RunGame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			gui.repaint();
 		}
-
-
-
-
-		// TODO Auto-generated method stub
-
 	}
 
 }

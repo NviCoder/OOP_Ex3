@@ -64,8 +64,11 @@ public class ShortestPathAlgorithm {
 			nextPoint.setFruitEating(id);
 			nextPackman.path.add(nextPoint);
 			nextPackman.setSeconds(minTime + nextPackman.getSeconds());
+			nextPackman.setLocation(eatingPoint);
 			game.fruitsAlive.remove(nextFruit);
 		}
+		for (Packman packman: game.packmans)
+			packman.setLocation(packman.startLocation);
 	}
 
 }
