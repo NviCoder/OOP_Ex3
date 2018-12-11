@@ -41,7 +41,8 @@ public class GenericGeoObject {
 	}
 	
 	public double distance(GenericGeoObject other) {
-		return location.distance3D(other.location);
+		MyCoords mc = new MyCoords();
+		return mc.distance3d(location, other.location);
 	}
 
 }
