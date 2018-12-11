@@ -1,6 +1,7 @@
 package gui;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -8,8 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -41,11 +46,26 @@ public class MainWindow extends JFrame implements MouseListener
 	public double seconds = 0;
 	public int totalWeight = 0;
 
+	private BufferedImage[] fruitsImages;
+
 	final JFileChooser fc = new JFileChooser();
 	final MyCoords mc = new MyCoords();
 
 	public MainWindow(Map _map) 
-	{
+	{		
+		fruitsImages = new BufferedImage[6];
+		try {
+			fruitsImages[0] = ImageIO.read( new File("apple.png" ));
+			fruitsImages[1] = ImageIO.read( new File("apple2.png" ));
+			fruitsImages[2] = ImageIO.read( new File("banana.png" ));
+			fruitsImages[3] = ImageIO.read( new File("orange.png" ));
+			fruitsImages[4] = ImageIO.read( new File("peach.png" ));
+			fruitsImages[5] = ImageIO.read( new File("watermalon.png" ));
+		} catch (IOException exc) {
+			//			e.printStackTrace();
+			System.out.println(exc.toString());
+		}
+
 		map = _map;
 		initGUI();		
 		this.addMouseListener(this); 
@@ -87,9 +107,9 @@ public class MainWindow extends JFrame implements MouseListener
 
 		//set listeners for the menu bar
 		importCsvItem.addActionListener(new ImportCsv(this));
-		
+
 		exportToCsvItem.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String pathName = chooseFolder();
@@ -97,11 +117,11 @@ public class MainWindow extends JFrame implements MouseListener
 					Game2Csv convertor = new Game2Csv();
 					convertor.export(game, pathName, "game_" + randNumber());
 				}
-				
+
 			}
 		});
 		exportToKml.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String pathName = chooseFolder();
@@ -111,7 +131,7 @@ public class MainWindow extends JFrame implements MouseListener
 				}
 			}
 		});
-		
+
 		realtime.addActionListener(new RunGame(this));	
 		endPoint.addActionListener(new EndGameListener(this));
 
@@ -151,16 +171,27 @@ public class MainWindow extends JFrame implements MouseListener
 		for (Fruit fruit: game.fruits) {
 			Pixel bit = map.gps2pixel(fruit.getLocation());
 			bit.setProportion(proportionW, proportionH);
-			g.setColor(Color.red);
-			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of fruit??
+
+			g.drawImage(fruitsImages[fruit.getRandImage()], bit.x(), bit.y(), this );
 		}
+		//			g.setColor(Color.red);
+		//			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of fruit??
 
 		//draw packmans
 		for (Packman packman: game.packmans) {
 			Pixel bit = map.gps2pixel(packman.getLocation());
-			bit.setProportion(proportionW, proportionH);
-			g.setColor(Color.yellow);
-			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of packman??
+			bit.setProportion(proportionW, proportionH);// With tzvi code we don't need this.
+			try
+			{
+				BufferedImage img = ImageIO.read( new File("thePackman2.png" ));
+				g.drawImage( img, bit.x(), bit.y(), this );
+			}
+			catch ( IOException exc )
+			{
+				System.out.println(exc.toString());
+			}
+			//			g.setColor(Color.yellow);
+			//          g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of packman??
 		}
 
 
@@ -197,7 +228,7 @@ public class MainWindow extends JFrame implements MouseListener
 		Pixel tail = map.gps2pixel(gps1);
 		return new Line(head, tail);
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -221,27 +252,28 @@ public class MainWindow extends JFrame implements MouseListener
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public String chooseFolder() {
 		JFileChooser chooser = new JFileChooser();
+		chooser.setApproveButtonText("Save");
 		chooser.setCurrentDirectory(new java.io.File("."));
-	    chooser.setDialogTitle("Folders");
-	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-	    chooser.setAcceptAllFileFilterUsed(false);
-	    //    
-	    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-	    	File path = chooser.getSelectedFile();
-	    	return path.getAbsolutePath();
-	    }
-	    else return null;
+		chooser.setDialogTitle("Folders");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		//    
+		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File path = chooser.getSelectedFile();
+			return path.getAbsolutePath();
+		}
+		else return null;
 	}
-	
+
 	private int randNumber() {
 		return (int)(Math.random()*100000000);
 	}
 
 	public static void main(String[] args) {
-		Map m = new Map("E:\\yoav\\îãòé äîçùá\\ñîñèø à\\îåğçä òöîéí\\îèìä3\\Ex3 (2)\\Ex3\\Ariel1.png");
+		Map m = new Map("E:\\yoav\\××“×¢×™ ×”××—×©×‘\\×¡××¡×˜×¨ ×\\××•× ×—×” ×¢×¦××™×\\××˜×œ×”3\\Ex3 (2)\\Ex3\\Ariel1.png");
 		System.out.println("height:" + m.height() + " widht:" + m.widht());
 
 		MainWindow window = new MainWindow(m);
