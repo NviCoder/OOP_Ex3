@@ -27,10 +27,10 @@ public class Map {
 			e.printStackTrace();
 		}
 		
-		nw = new Point3D(32.10575, 35.202377777777784, 0);
-		ne = new Point3D(32.10575, 35.212561111111114, 0);
-		sw = new Point3D(32.10280, 35.20266388888889, 0);
-		se = new Point3D(32.10280, 35.21176944444445, 0);
+		nw = new Point3D( 32.105394,  35.202532, 0);
+		ne = new Point3D( 32.105444,  35.212496, 0);
+		sw = new Point3D( 32.101899,  35.202447, 0);
+		se = new Point3D( 32.101899,  35.212496, 0);
 	}
 	
 	public int height() {
@@ -80,7 +80,7 @@ public class Map {
 
 	
 	public static void main(String[] args) {
-		Map m = new Map("E:\\yoav\\îãòé äîçùá\\ñîñèø à\\îåðçä òöîéí\\îèìä3\\Ex3 (2)\\Ex3\\Ariel1.png");
+		Map m = new Map("E:\\yoav\\Ã®Ã£Ã²Ã© Ã¤Ã®Ã§Ã¹Ã¡\\Ã±Ã®Ã±Ã¨Ã¸ Ã \\Ã®Ã¥Ã°Ã§Ã¤ Ã²Ã¶Ã®Ã©Ã­\\Ã®Ã¨Ã¬Ã¤3\\Ex3 (2)\\Ex3\\Ariel1.png");
 		System.out.println("height:" + m.height() + " widht:" + m.widht());
 		Pixel b = m.gps2pixel(new Point3D(32.10300, 35.205));
 		System.out.println(b);
