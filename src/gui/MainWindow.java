@@ -55,12 +55,12 @@ public class MainWindow extends JFrame implements MouseListener
 	{		
 		fruitsImages = new BufferedImage[6];
 		try {
-			fruitsImages[0] = ImageIO.read( new File("apple.png" ));
-			fruitsImages[1] = ImageIO.read( new File("apple2.png" ));
-			fruitsImages[2] = ImageIO.read( new File("banana.png" ));
-			fruitsImages[3] = ImageIO.read( new File("orange.png" ));
-			fruitsImages[4] = ImageIO.read( new File("peach.png" ));
-			fruitsImages[5] = ImageIO.read( new File("watermalon.png" ));
+			fruitsImages[0] = ImageIO.read( new File("ImagesforGui\\apple.png" ));
+			fruitsImages[1] = ImageIO.read( new File("ImagesforGui\\apple2.png" ));
+			fruitsImages[2] = ImageIO.read( new File("ImagesforGui\\banana.png" ));
+			fruitsImages[3] = ImageIO.read( new File("ImagesforGui\\orange.png" ));
+			fruitsImages[4] = ImageIO.read( new File("ImagesforGui\\peach.png" ));
+			fruitsImages[5] = ImageIO.read( new File("ImagesforGui\\watermalon.png" ));
 		} catch (IOException exc) {
 			//			e.printStackTrace();
 			System.out.println(exc.toString());
@@ -183,7 +183,7 @@ public class MainWindow extends JFrame implements MouseListener
 			bit.setProportion(proportionW, proportionH);// With tzvi code we don't need this.
 			try
 			{
-				BufferedImage img = ImageIO.read( new File("thePackman2.png" ));
+				BufferedImage img = ImageIO.read( new File("ImagesforGui\\thePackman2.png" ));
 				g.drawImage( img, bit.x(), bit.y(), this );
 			}
 			catch ( IOException exc )
@@ -283,3 +283,4 @@ public class MainWindow extends JFrame implements MouseListener
 	}
 
 }
+
