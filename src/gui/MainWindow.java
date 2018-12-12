@@ -84,12 +84,14 @@ public class MainWindow extends JFrame implements MouseListener
 		menuFile.add(importCsvItem);
 		menuFile.add(exportToCsvItem);
 
-		Menu menuAddObject = new Menu("add");
+		Menu menuAddObject = new Menu("objects");
 		MenuItem addFruitItem = new MenuItem("fruit");
 		MenuItem addPackmanItem = new MenuItem("packman");
+		MenuItem resetItem = new MenuItem("clear");
 		menuBar.add(menuAddObject);
 		menuAddObject.add(addFruitItem);
 		menuAddObject.add(addPackmanItem);
+		menuAddObject.add(resetItem);
 
 		Menu menuRun = new Menu("run");
 		MenuItem realtime = new MenuItem("real time");
@@ -158,6 +160,18 @@ public class MainWindow extends JFrame implements MouseListener
 			public void actionPerformed(ActionEvent arg0) {
 				addPackman = !addPackman;
 				addFruit = false;
+			}
+		});
+		
+		resetItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				game.clear();
+				lines.clear();
+				seconds = 0;
+				totalWeight = 0;
+				repaint();
 			}
 		});
 	}
@@ -273,16 +287,6 @@ public class MainWindow extends JFrame implements MouseListener
 
 	private int randNumber() {
 		return (int)(Math.random()*100000000);
-	}
-
-	public static void main(String[] args) {
-		Map m = new Map("E:\\yoav\\מדעי המחשב\\סמסטר א\\מונחה עצמים\\מטלה3\\Ex3 (2)\\Ex3\\Ariel1.png");
-		System.out.println("height:" + m.height() + " widht:" + m.widht());
-
-		MainWindow window = new MainWindow(m);
-		window.setVisible(true);
-		window.setSize(window.map.widht(),window.map.height());
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }
