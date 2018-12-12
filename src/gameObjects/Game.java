@@ -51,9 +51,10 @@ public class Game {
 		return maxID + 1;
 	}
 	
-	private void clear() {
+	public void clear() {
 		fruits.clear();
-		fruitsAlive.clear();
+		if (fruitsAlive != null)
+			fruitsAlive.clear();
 		packmans.clear();
 	}
 }

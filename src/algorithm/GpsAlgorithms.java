@@ -13,6 +13,8 @@ public class GpsAlgorithms {
 	public static Point3D eatingPoint(Packman packman, Fruit fruit) {
 		MyCoords mc = new MyCoords();
 		Point3D vector = mc.vector3D(packman.getLocation(), fruit.getLocation());
+		if (vector.equals(new Point3D(0,0,0)))
+			return packman.getLocation();
 		double ratio = (vector.length() - packman.radius) / vector.length();
 		Point3D ratioVector = mc.ratioVector(vector, ratio);
 		return mc.add(packman.getLocation(), ratioVector);

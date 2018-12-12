@@ -25,7 +25,6 @@ public class EndGameListener implements ActionListener {
 			return;
 		
 		gui.seconds = gui.game.findShortestPath();
-//		runPackmans = new HashSet<>(gui.game.packmans);
 		
 		for (Packman packman: gui.game.packmans) {
 			packman.setLocation(packman.path.getLast().getLocation());
