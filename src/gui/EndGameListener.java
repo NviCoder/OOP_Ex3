@@ -21,6 +21,9 @@ public class EndGameListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (gui.game.packmans.isEmpty())
+			return;
+		
 		gui.seconds = gui.game.findShortestPath();
 //		runPackmans = new HashSet<>(gui.game.packmans);
 		
