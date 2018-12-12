@@ -33,23 +33,19 @@ public class Map {
 		se = new Point3D( 32.101899,  35.212496, 0);
 	}
 	
-	public int height() {
+	public int getOriginHeight() {
 		return myImage.getHeight();
 	}
 	
-	public int widht() {
+	public int getOriginWidht() {
 		return myImage.getWidth();
 	}
 	
-//	public void setSize(int x, int y){
-//		;
-//	}
-	
-	public Pixel gps2pixel(Point3D point) { //very bad function!!
+	public Pixel gps2pixel(Point3D point, int widht, int height) { //very bad function!!
 		double imageLatD = nw.x() - se.x();
 		double currentLatD = nw.x() - point.x();
 		double fractionNorth = currentLatD / imageLatD; 
-		double latpixel = fractionNorth * height();
+		double latpixel = fractionNorth * height;
 		
 		Point3D leftMergin = mc.midPoint(nw, sw, fractionNorth);
 		Point3D rightMergin = mc.midPoint(ne, se, fractionNorth);
@@ -57,15 +53,15 @@ public class Map {
 		double currentImageLonD = rightMergin.y() - leftMergin.y();
 		double currentLonD = point.y() - leftMergin.y();
 		double fractionWest = currentLonD / currentImageLonD;
-		double lonpixel = fractionWest * widht();
+		double lonpixel = fractionWest * widht;
 
 		return new Pixel((int)lonpixel, (int)latpixel);
 	}
 
-	public Point3D pixel2gps (Pixel pixel) {
+	public Point3D pixel2gps (Pixel pixel, int widht, int height) {
 		//TODO
-		double ratioH = (double)pixel.y() / height();
-		double ratioW = (double)pixel.x() / widht();
+		double ratioH = (double)pixel.y() / height;
+		double ratioW = (double)pixel.x() / widht;
 		double imageLatD = nw.x() - se.x();
 		double lat = nw.x() - ratioH * imageLatD;
 		
@@ -78,23 +74,6 @@ public class Map {
 		return new Point3D(lat, lon, 0);
 	}
 
-	
-	public static void main(String[] args) {
-		Map m = new Map("E:\\yoav\\îãòé äîçùá\\ñîñèø à\\îåðçä òöîéí\\îèìä3\\Ex3 (2)\\Ex3\\Ariel1.png");
-		System.out.println("height:" + m.height() + " widht:" + m.widht());
-		Pixel b = m.gps2pixel(new Point3D(32.10300, 35.205));
-		System.out.println(b);
-		for (int i=0; i<5; i++)
-			for (int j=0; j<5; j++)
-				m.myImage.setRGB(b.x()+i, b.y()+j, 0);
-		File outputfile = new File("image.jpg");
-		try {
-			ImageIO.write(m.myImage, "jpg", outputfile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	
 }

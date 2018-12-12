@@ -47,7 +47,8 @@ public class MainWindow extends JFrame implements MouseListener
 	public int totalWeight = 0;
 
 	private BufferedImage[] fruitsImages;
-
+	private BufferedImage packmanImage;
+	
 	final JFileChooser fc = new JFileChooser();
 	final MyCoords mc = new MyCoords();
 
@@ -61,6 +62,7 @@ public class MainWindow extends JFrame implements MouseListener
 			fruitsImages[3] = ImageIO.read( new File("ImagesforGui\\orange.png" ));
 			fruitsImages[4] = ImageIO.read( new File("ImagesforGui\\peach.png" ));
 			fruitsImages[5] = ImageIO.read( new File("ImagesforGui\\watermalon.png" ));
+			packmanImage = ImageIO.read( new File("ImagesforGui\\thePackman2.png" ));
 		} catch (IOException exc) {
 			//			e.printStackTrace();
 			System.out.println(exc.toString());
@@ -85,8 +87,8 @@ public class MainWindow extends JFrame implements MouseListener
 		menuFile.add(exportToCsvItem);
 
 		Menu menuAddObject = new Menu("objects");
-		MenuItem addFruitItem = new MenuItem("fruit");
-		MenuItem addPackmanItem = new MenuItem("packman");
+		MenuItem addFruitItem = new MenuItem("add fruit");
+		MenuItem addPackmanItem = new MenuItem("add packman");
 		MenuItem resetItem = new MenuItem("clear");
 		menuBar.add(menuAddObject);
 		menuAddObject.add(addFruitItem);
@@ -181,48 +183,38 @@ public class MainWindow extends JFrame implements MouseListener
 //		proportionW = this.getWidth()/map.widht();
 //		proportionH = this.getHeight()/map.height();
 		
-		g.drawImage(map.myImage, 0, 0, this.getWidth(), this.getHeight(), this);
+		g.drawImage(map.myImage, 0, 0, this.getWidth()-8, this.getHeight()-8, this);
 
 
 		//draw fruits
 		for (Fruit fruit: game.fruits) {
-			Pixel bit = map.gps2pixel(fruit.getLocation());
-			bit.setProportion(proportionW, proportionH);
-
-			g.drawImage(fruitsImages[fruit.getRandImage()], bit.x(), bit.y(), this );
+			Pixel pixel = map.gps2pixel(fruit.getLocation(), this.getWidth()-8, this.getHeight()-8);
+			g.drawImage(fruitsImages[fruit.getRandImage()], pixel.x()-8, pixel.y()-8, this );
 		}
-		//			g.setColor(Color.red);
-		//			g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of fruit??
+
 
 		//draw packmans
 		for (Packman packman: game.packmans) {
-			Pixel bit = map.gps2pixel(packman.getLocation());
-			bit.setProportion(proportionW, proportionH);// With tzvi code we don't need this.
-			try
-			{
-				BufferedImage img = ImageIO.read( new File("ImagesforGui\\thePackman2.png" ));
-				g.drawImage( img, bit.x(), bit.y(), this );
-			}
-			catch ( IOException exc )
-			{
-				System.out.println(exc.toString());
-			}
-			//			g.setColor(Color.yellow);
-			//          g.fillOval(bit.x(), bit.y(), 10, 10); //check it! change to image of packman??
+			Pixel pixel = map.gps2pixel(packman.getLocation(), this.getWidth()-8, this.getHeight()-8);
+			g.drawImage(packmanImage, pixel.x()-8, pixel.y()-8, this );
 		}
 
 
 		//draw pathes
 		g.setColor(Color.green);
 		for (Line line: lines) {
-			Pixel head = line.getHead();
-			head.setProportion(proportionW, proportionH);
-			Pixel tail= line.getTail();
-			tail.setProportion(proportionW, proportionH);
+			Pixel head = map.gps2pixel(line.getHead(), this.getWidth()-8, this.getHeight()-8);
+			Pixel tail= map.gps2pixel(line.getTail(), this.getWidth()-8, this.getHeight()-8);
 			g.drawLine(head.x(), head.y(), tail.x(), tail.y());
 		}
 	}
 
+
+//	public Line addLine(Point3D gps0, Point3D gps1) {
+//		Pixel head = map.gps2pixel(gps0, this.getWidth()-8, this.getHeight()-8);
+//		Pixel tail = map.gps2pixel(gps1, this.getWidth()-8, this.getHeight()-8);
+//		return new Line(head, tail);
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
@@ -230,20 +222,14 @@ public class MainWindow extends JFrame implements MouseListener
 		System.out.println(pixel);
 		pixel.removeProportion(proportionW, proportionH);
 		if (addFruit) {
-			Fruit fruit = new Fruit(map.pixel2gps(pixel), 1,  game.fruits.size()+1);
+			Fruit fruit = new Fruit(map.pixel2gps(pixel, this.getWidth(), this.getHeight()), 1,  game.fruits.size()+1);
 			game.fruits.add(fruit);
 			repaint();
 		}
 		if (addPackman) {
 			//TODO
-			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel), game.getNextPackmanID());
+			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel, this.getWidth()-8, this.getHeight()-8), game.getNextPackmanID());
 		}
-	}
-
-	public Line addLine(Point3D gps0, Point3D gps1) {
-		Pixel head = map.gps2pixel(gps0);
-		Pixel tail = map.gps2pixel(gps1);
-		return new Line(head, tail);
 	}
 
 	@Override

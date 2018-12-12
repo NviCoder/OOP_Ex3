@@ -8,6 +8,7 @@ import java.util.Set;
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import gameObjects.PathPoint;
+import guiObjects.Line;
 
 public class EndGameListener implements ActionListener {
 
@@ -32,7 +33,7 @@ public class EndGameListener implements ActionListener {
 			PathPoint current = packman.path.pollFirst();
 			while (current != last) {
 				PathPoint next = packman.path.pollFirst();
-				gui.lines.add(gui.addLine(current.getLocation(), next.getLocation()));
+				gui.lines.add(new Line(current.getLocation(), next.getLocation()));
 				current = next;
 			}
 		}

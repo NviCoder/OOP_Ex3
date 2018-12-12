@@ -9,6 +9,7 @@ import java.util.Set;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.PathPoint;
+import guiObjects.Line;
 
 public class RunGame implements ActionListener {
 
@@ -38,7 +39,7 @@ public class RunGame implements ActionListener {
 				while (first != null && !packman.path.isEmpty()) {
 					PathPoint next = packman.path.getFirst();
 					if (next.getSeconds() <= time) {
-						gui.lines.add(gui.addLine(first.getLocation(), next.getLocation()));
+						gui.lines.add(new Line(first.getLocation(), next.getLocation()));
 						gui.totalWeight += next.getWeight();
 						first = next;
 						packman.path.removeFirst();
@@ -55,6 +56,7 @@ public class RunGame implements ActionListener {
 			}
 			gui.seconds++;
 			System.out.println("time: "+time);
+			gui.repaint();
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);
 			try {
 				Thread.sleep(processTime);
@@ -62,7 +64,6 @@ public class RunGame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			gui.repaint();
 		}
 	}
 

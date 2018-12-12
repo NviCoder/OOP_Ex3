@@ -1,21 +1,23 @@
 package guiObjects;
 
+import GeoObjects.Point3D;
+
 public class Line {
 
-	Pixel head;
-	Pixel tail;
+	Point3D head;
+	Point3D tail;
 	
-	public Line(Pixel head, Pixel tail) {
+	public Line(Point3D head, Point3D tail) {
 		this.head = head;
 		this.tail = tail;
 	}
 
-	public Pixel getHead() {
+	public Point3D getHead() {
 		return head;
 	}
 
 
-	public Pixel getTail() {
+	public Point3D getTail() {
 		return tail;
 	}
 	
