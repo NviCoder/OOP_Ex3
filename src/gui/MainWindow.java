@@ -164,7 +164,10 @@ public class MainWindow extends JFrame implements MouseListener
 
 	public void paint(Graphics g)
 	{
-		g.drawImage(map.myImage, 0, 0, this);
+//		proportionW = this.getWidth()/map.widht();
+//		proportionH = this.getHeight()/map.height();
+		
+		g.drawImage(map.myImage, 0, 0, this.getWidth(), this.getHeight(), this);
 
 
 		//draw fruits
