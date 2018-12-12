@@ -50,5 +50,11 @@ public class Game {
 				maxID = packman.getID();
 		return maxID + 1;
 	}
+	
+	private void clear() {
+		fruits.clear();
+		fruitsAlive.clear();
+		packmans.clear();
+	}
 }
 
