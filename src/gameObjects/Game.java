@@ -65,8 +65,9 @@ public class Game {
 	public String timetoString() {
 		if (seconds < 60)
 			return ("seconds: "+seconds);
-		else
-			return ("minutes: "+(int)seconds/60 +":" + (int)seconds%60); //what about 1:06 ???
+		else if (seconds%60<10)
+			return ("minutes: "+(int)seconds/60 +":0" + (int)seconds%60);
+		else return ("minutes: "+(int)seconds/60 +":" + (int)seconds%60);
 	}
 	
 	public double getSeconds() {

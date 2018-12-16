@@ -45,12 +45,12 @@ public class MainWindow extends JFrame implements MouseListener
 
 	public HashSet<Line> lines = new HashSet<>();
 
-//	public double seconds = 0;
+	//	public double seconds = 0;
 	public int totalWeight = 0;
 
 	private BufferedImage[] fruitsImages;
 	private BufferedImage packmanImage;
-	
+
 	final JFileChooser fc = new JFileChooser();
 	final MyCoords mc = new MyCoords();
 
@@ -163,9 +163,9 @@ public class MainWindow extends JFrame implements MouseListener
 				addFruit = false;
 			}
 		});
-		
+
 		resetItem.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				clear();
@@ -175,9 +175,6 @@ public class MainWindow extends JFrame implements MouseListener
 
 	public void paint(Graphics g)
 	{
-//		proportionW = this.getWidth()/map.widht();
-//		proportionH = this.getHeight()/map.height();
-		
 		g.drawImage(map.myImage,8, 51, this.getWidth()-16, this.getHeight()-59, this);
 
 
@@ -205,11 +202,11 @@ public class MainWindow extends JFrame implements MouseListener
 	}
 
 
-//	public Line addLine(Point3D gps0, Point3D gps1) {
-//		Pixel head = map.gps2pixel(gps0, this.getWidth()-8, this.getHeight()-8);
-//		Pixel tail = map.gps2pixel(gps1, this.getWidth()-8, this.getHeight()-8);
-//		return new Line(head, tail);
-//	}
+	//	public Line addLine(Point3D gps0, Point3D gps1) {
+	//		Pixel head = map.gps2pixel(gps0, this.getWidth()-8, this.getHeight()-8);
+	//		Pixel tail = map.gps2pixel(gps1, this.getWidth()-8, this.getHeight()-8);
+	//		return new Line(head, tail);
+	//	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
@@ -279,13 +276,26 @@ public class MainWindow extends JFrame implements MouseListener
 		totalWeight = 0;
 		repaint();
 	}
-	
+
 	public void startPoint() {
 		for (Packman packman: game.packmans) {
 			packman.setLocation(packman.getStartLocation());
 		}
 		lines.clear();
 		repaint();
+	}
+
+	public void addAllLines() {
+		for (Packman packman: game.packmans) {
+			java.util.ListIterator<PathPoint> it = packman.path.listIterator();
+			PathPoint current = it.next();
+			PathPoint next;
+			while (it.hasNext()) {
+				next = it.next();
+				lines.add(new Line(current.getLocation(), next.getLocation()));
+				current = next;
+			}
+		}
 	}
 
 }

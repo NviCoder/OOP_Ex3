@@ -43,7 +43,7 @@ public class ShortestPathAlgorithm {
 		int weight=0, id=-1;
 		while (!game.fruitsAlive.isEmpty()) {
 			minTime = Double.MAX_VALUE;
-			for (Packman packman: game.packmans) {
+			for (Packman packman: game.packmans) {			
 				Fruit closestFruit = findCloseFruit(packman);
 				double pathTime = GpsAlgorithms.eatingTime(packman, closestFruit); 
 				if (packman.getSeconds() + pathTime < minTime) {

@@ -24,7 +24,7 @@ public class GenericGeoObject {
 
 
 	public void setLocation(Point3D gps) {
-		location = new Point3D(gps);
+		location = gps;
 	}
 	
 	public boolean isAlive() {

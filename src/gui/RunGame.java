@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Set;
 
+import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.PathPoint;
@@ -26,35 +28,33 @@ public class RunGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (!gui.game.calculated) {
 			gui.game.findShortestPath();
 		}
-		
-		runPackmans = new HashSet<>(gui.game.packmans);
-		
+
 		gui.totalWeight = 0;
 		double endTime = gui.game.getSeconds();
+		gui.addAllLines();
+		gui.repaint();
 		System.out.println("total time: " + gui.game.timetoString());
+		
 
 		for (int time=0; time < endTime+1; time++ ) {
 			long processingStart = System.currentTimeMillis();
-			for (Packman packman: runPackmans) {
-				PathPoint first = packman.path.pollFirst();
-				while (first != null && !packman.path.isEmpty()) {
-					PathPoint next = packman.path.getFirst();
-					if (next.getSeconds() <= time) {
-						gui.lines.add(new Line(first.getLocation(), next.getLocation()));
-						gui.totalWeight += next.getWeight();
-						first = next;
-						packman.path.removeFirst();
-						packman.setLocation(next.getLocation());
-					}
+			for (Packman packman: gui.game.packmans) {
+				ListIterator<PathPoint> it = packman.path.listIterator();
+				PathPoint current = it.next();
+				while (it.hasNext()) {
+					PathPoint next = it.next();
+					if (next.getSeconds() > time)
+						current = next;
 					else {
-						double ratio = (time - first.getSeconds()) / (next.getSeconds() - first.getSeconds());
-						Point3D mid = gui.mc.midPoint(first.getLocation(), next.getLocation(), ratio);
+//						gui.totalWeight += next.getWeight();
+						double ratio = (time - current.getSeconds()) / (next.getSeconds() - current.getSeconds());
+						Point3D mid = gui.mc.midPoint(current.getLocation(), next.getLocation(), ratio);
 						packman.setLocation(mid);
-						packman.path.addFirst(first);
+						System.out.println(mid);
 						break;
 					}
 				}

@@ -34,16 +34,8 @@ public class EndGameListener implements ActionListener {
 		for (Packman packman: gui.game.packmans) {
 			packman.setSeconds(0);
 			packman.setLocation(packman.path.getLast().getLocation());
-
-			java.util.ListIterator<PathPoint> it = packman.path.listIterator();
-			PathPoint current = it.next();
-			PathPoint next;
-			while (it.hasNext()) {
-				next = it.next();
-				gui.lines.add(new Line(current.getLocation(), next.getLocation()));
-				current = next;
-			}
 		}
+		gui.addAllLines();
 
 		//calculate total weight
 		gui.totalWeight = 0;

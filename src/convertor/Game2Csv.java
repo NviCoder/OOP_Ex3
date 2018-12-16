@@ -31,7 +31,7 @@ public class Game2Csv {
 		csv.append("Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+game.packmans.size()+","+game.fruits.size());
 		
 		for (Packman packman: game.packmans)
-			appendRow(true, packman.getID(), packman.getLocation(), packman.getSpeed(), packman.getradius());
+			appendRow(true, packman.getID(), packman.startLocation, packman.getSpeed(), packman.getradius());
 		for (Fruit fruit: game.fruits)
 			appendRow(false, fruit.getId(), fruit.getLocation(), fruit.getWeight(), -1);
 	}

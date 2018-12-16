@@ -98,7 +98,7 @@ public class Game2kml {
 			
 			for (PathPoint point: packman.path) {
 				Point3D location = point.getLocation();
-				String time = longToKmlTime(startingTime + (long)(1000000*point.getSeconds()));
+				String time = longToKmlTime(startingTime + (long)(1000*point.getSeconds()));
 				when.append("<when>"+time+"</when>\n");
 				coord.append("<gx:coord>"+location.y()+" "+location.x()+" "+location.z()+700+"</gx:coord>\n");
 				weight.append("<gx:value>"+point.getWeight()+"</gx:value>\n");
