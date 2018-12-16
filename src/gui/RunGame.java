@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
 
+import com.sun.prism.Graphics;
+
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
@@ -47,20 +49,20 @@ public class RunGame implements ActionListener {
 				PathPoint current = it.next();
 				while (it.hasNext()) {
 					PathPoint next = it.next();
-					if (next.getSeconds() > time)
+					if (next.getSeconds() < time)
 						current = next;
 					else {
 //						gui.totalWeight += next.getWeight();
 						double ratio = (time - current.getSeconds()) / (next.getSeconds() - current.getSeconds());
 						Point3D mid = gui.mc.midPoint(current.getLocation(), next.getLocation(), ratio);
 						packman.setLocation(mid);
-						System.out.println(mid);
 						break;
 					}
 				}
 			}
 			System.out.println("time: "+time);
-			gui.repaint();
+//			gui.repaint();
+			gui.paint(gui.getGraphics());
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);
 			try {
 				Thread.sleep(processTime);
