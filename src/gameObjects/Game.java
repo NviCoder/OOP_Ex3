@@ -25,12 +25,15 @@ public class Game {
 	public Set <Fruit> fruits = new HashSet<Fruit>();
 	public Set <Fruit> fruitsAlive;
 	public Set <Packman> packmans = new HashSet<Packman>();
-
-
+	public boolean calculated = true;
+	private double seconds = 0;
+	
 	public double findShortestPath() {
 		ShortestPathAlgorithm algorithm = new ShortestPathAlgorithm(this);
 		algorithm.multiPackmans();
-		return timeForGame();
+		calculated = true;
+		seconds = timeForGame();
+		return seconds;
 	}
 
 	public double timeForGame() {
@@ -52,10 +55,22 @@ public class Game {
 	}
 	
 	public void clear() {
+		seconds = 0;
 		fruits.clear();
 		if (fruitsAlive != null)
 			fruitsAlive.clear();
 		packmans.clear();
+	}
+	
+	public String timetoString() {
+		if (seconds < 60)
+			return ("seconds: "+seconds);
+		else
+			return ("minutes: "+(int)seconds/60 +":" + (int)seconds%60); //what about 1:06 ???
+	}
+	
+	public double getSeconds() {
+		return seconds;
 	}
 }
 

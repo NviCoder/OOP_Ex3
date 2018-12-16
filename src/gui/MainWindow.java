@@ -26,6 +26,8 @@ import GeoObjects.Point3D;
 import convertor.Game2Csv;
 import convertor.Game2kml;
 import gameObjects.Game;
+import gameObjects.Path;
+import gameObjects.PathPoint;
 import guiObjects.Pixel;
 import guiObjects.Line;
 import guiObjects.Map;
@@ -43,7 +45,7 @@ public class MainWindow extends JFrame implements MouseListener
 
 	public HashSet<Line> lines = new HashSet<>();
 
-	public double seconds = 0;
+//	public double seconds = 0;
 	public int totalWeight = 0;
 
 	private BufferedImage[] fruitsImages;
@@ -143,10 +145,7 @@ public class MainWindow extends JFrame implements MouseListener
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (Packman packman: game.packmans)
-					packman.setLocation(packman.getStartLocation());
-				lines.clear();
-				repaint();
+				startPoint();
 			}
 		});
 
@@ -169,11 +168,7 @@ public class MainWindow extends JFrame implements MouseListener
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				game.clear();
-				lines.clear();
-				seconds = 0;
-				totalWeight = 0;
-				repaint();
+				clear();
 			}
 		});
 	}
@@ -183,29 +178,29 @@ public class MainWindow extends JFrame implements MouseListener
 //		proportionW = this.getWidth()/map.widht();
 //		proportionH = this.getHeight()/map.height();
 		
-		g.drawImage(map.myImage, 0, 0, this.getWidth()-8, this.getHeight()-8, this);
+		g.drawImage(map.myImage,8, 51, this.getWidth()-16, this.getHeight()-59, this);
 
 
 		//draw fruits
 		for (Fruit fruit: game.fruits) {
-			Pixel pixel = map.gps2pixel(fruit.getLocation(), this.getWidth()-8, this.getHeight()-8);
-			g.drawImage(fruitsImages[fruit.getRandImage()], pixel.x()-8, pixel.y()-8, this );
+			Pixel pixel = map.gps2pixel(fruit.getLocation(), this.getWidth()-16, this.getHeight()-59);
+			g.drawImage(fruitsImages[fruit.getRandImage()], pixel.x()+8, pixel.y()+51, this );
 		}
 
 
 		//draw packmans
 		for (Packman packman: game.packmans) {
-			Pixel pixel = map.gps2pixel(packman.getLocation(), this.getWidth()-8, this.getHeight()-8);
-			g.drawImage(packmanImage, pixel.x()-8, pixel.y()-8, this );
+			Pixel pixel = map.gps2pixel(packman.getLocation(), this.getWidth()-16, this.getHeight()-59);
+			g.drawImage(packmanImage, pixel.x()+8, pixel.y()+51, this);
 		}
 
 
 		//draw pathes
 		g.setColor(Color.green);
 		for (Line line: lines) {
-			Pixel head = map.gps2pixel(line.getHead(), this.getWidth()-8, this.getHeight()-8);
-			Pixel tail= map.gps2pixel(line.getTail(), this.getWidth()-8, this.getHeight()-8);
-			g.drawLine(head.x(), head.y(), tail.x(), tail.y());
+			Pixel head = map.gps2pixel(line.getHead(), this.getWidth()-16, this.getHeight()-59);
+			Pixel tail= map.gps2pixel(line.getTail(), this.getWidth()-16, this.getHeight()-59);
+			g.drawLine(head.x()+8+8, head.y()+51+8, tail.x()+8+8, tail.y()+51+8);
 		}
 	}
 
@@ -218,17 +213,18 @@ public class MainWindow extends JFrame implements MouseListener
 
 	@Override
 	public void mouseClicked(MouseEvent arg) {
-		Pixel pixel = new Pixel(arg.getX(), arg.getY());
+		Pixel pixel = new Pixel(arg.getX()-8, arg.getY()-51);
 		System.out.println(pixel);
 		pixel.removeProportion(proportionW, proportionH);
 		if (addFruit) {
-			Fruit fruit = new Fruit(map.pixel2gps(pixel, this.getWidth(), this.getHeight()), 1,  game.fruits.size()+1);
+			Fruit fruit = new Fruit(map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59), 1,  game.fruits.size()+1);
 			game.fruits.add(fruit);
+			game.calculated = false;
 			repaint();
 		}
 		if (addPackman) {
 			//TODO
-			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel, this.getWidth()-8, this.getHeight()-8), game.getNextPackmanID());
+			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59), game.getNextPackmanID());
 		}
 	}
 
@@ -273,6 +269,23 @@ public class MainWindow extends JFrame implements MouseListener
 
 	private int randNumber() {
 		return (int)(Math.random()*100000000);
+	}
+
+	public void clear() {
+		// TODO Auto-generated method stub
+		game.clear();
+		game.calculated = true;
+		lines.clear();
+		totalWeight = 0;
+		repaint();
+	}
+	
+	public void startPoint() {
+		for (Packman packman: game.packmans) {
+			packman.setLocation(packman.getStartLocation());
+		}
+		lines.clear();
+		repaint();
 	}
 
 }

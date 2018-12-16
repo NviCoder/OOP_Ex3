@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import gameObjects.PathPoint;
@@ -14,36 +16,44 @@ public class EndGameListener implements ActionListener {
 
 	private MainWindow gui;
 	private Set <Packman> runPackmans;
-	
+
 	public EndGameListener(MainWindow gui) {
 		super();
 		this.gui = gui;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (gui.game.packmans.isEmpty())
 			return;
-		
-		gui.seconds = gui.game.findShortestPath();
-		
+		if (!gui.game.calculated) { 
+			gui.lines.clear();
+			gui.game.findShortestPath();			
+		}
+
 		for (Packman packman: gui.game.packmans) {
+			packman.setSeconds(0);
 			packman.setLocation(packman.path.getLast().getLocation());
-			PathPoint last = packman.path.getLast();
-			PathPoint current = packman.path.pollFirst();
-			while (current != last) {
-				PathPoint next = packman.path.pollFirst();
+
+			java.util.ListIterator<PathPoint> it = packman.path.listIterator();
+			PathPoint current = it.next();
+			PathPoint next;
+			while (it.hasNext()) {
+				next = it.next();
 				gui.lines.add(new Line(current.getLocation(), next.getLocation()));
 				current = next;
 			}
 		}
-		
+
 		//calculate total weight
 		gui.totalWeight = 0;
 		for (Fruit fruit: gui.game.fruits)
 			gui.totalWeight += fruit.getWeight();
+
+		gui.game.calculated = true;
+
 		gui.repaint();
-		System.out.println("seconds: "+gui.seconds);
+		System.out.println(gui.game.timetoString());
 	}
 
 }

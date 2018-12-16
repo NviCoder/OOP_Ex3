@@ -6,8 +6,11 @@ public class Pixel {
 	private int y;
 	
 	public Pixel(int x, int y) {
-		if (x<0 || y<0)
-			throw new RuntimeException("Bit couldn't be negative");
+		if (x<0 || y<0) {
+//			throw new RuntimeException("Bit couldn't be negative");
+			x = Math.max(0, x);
+			y = Math.max(0, y);
+		}
 		this.x = x;
 		this.y = y;
 	}

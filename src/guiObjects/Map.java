@@ -41,7 +41,7 @@ public class Map {
 		return myImage.getWidth();
 	}
 	
-	public Pixel gps2pixel(Point3D point, int widht, int height) { //very bad function!!
+	public Pixel gps2pixel(Point3D point, int widht, int height) { 
 		double imageLatD = nw.x() - se.x();
 		double currentLatD = nw.x() - point.x();
 		double fractionNorth = currentLatD / imageLatD; 

@@ -11,7 +11,7 @@ public class Main
 	    Map map = new Map("ImagesforGui\\Ariel1.png");
 		MainWindow window = new MainWindow(map);
 		window.setVisible(true);
-		window.setSize(map.getOriginWidht(),map.getOriginHeight());
+		window.setSize(map.getOriginWidht()+16,map.getOriginHeight()+59);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}

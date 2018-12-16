@@ -26,11 +26,16 @@ public class RunGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if (!gui.game.calculated) {
+			gui.game.findShortestPath();
+		}
+		
 		runPackmans = new HashSet<>(gui.game.packmans);
-		gui.lines.clear();
-		gui.seconds = 0;
+		
 		gui.totalWeight = 0;
-		double endTime = gui.game.findShortestPath();
+		double endTime = gui.game.getSeconds();
+		System.out.println("total time: " + gui.game.timetoString());
 
 		for (int time=0; time < endTime+1; time++ ) {
 			long processingStart = System.currentTimeMillis();
@@ -54,7 +59,6 @@ public class RunGame implements ActionListener {
 					}
 				}
 			}
-			gui.seconds++;
 			System.out.println("time: "+time);
 			gui.repaint();
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);

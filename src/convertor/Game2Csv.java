@@ -22,13 +22,13 @@ public class Game2Csv {
 		this.fileName = fileName;
 		
 		create();
-		csv.append("\r");
+//		csv.append("\r");
 		write();
 	}
 	
 	private void create() {
 		csv = new StringBuilder();
-		csv.append("Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+game.packmans.size()+","+game.fruits.size() + "\n");
+		csv.append("Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+game.packmans.size()+","+game.fruits.size());
 		
 		for (Packman packman: game.packmans)
 			appendRow(true, packman.getID(), packman.getLocation(), packman.getSpeed(), packman.getradius());
@@ -38,14 +38,14 @@ public class Game2Csv {
 	
 	private void appendRow(boolean isPackman, int id, Point3D point, double speed_weight, double radius) {
 		if (isPackman)
-			csv.append("p,");
+			csv.append("\nP,");
 		else
-			csv.append("f,");
+			csv.append("\nF,");
 		csv.append(id+","+ point.x()+","+ point.y()+","+ point.z()+","+ speed_weight+",");
 		if (isPackman)
-			csv.append(radius+",,\n");
+			csv.append(radius+",,");
 		else
-			csv.append(",,,\n");
+			csv.append(",,,");
 	}
 	
 	private void write() {

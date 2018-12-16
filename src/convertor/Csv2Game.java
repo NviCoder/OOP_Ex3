@@ -60,6 +60,7 @@ public class Csv2Game {
 				case "Lon":
 					Lon = i;
 					break;
+					
 				case "Alt":
 					Alt = i;
 					break;
@@ -96,9 +97,9 @@ public class Csv2Game {
 		
 		Point3D p = new Point3D(Double.parseDouble(csvRow[Lat]),Double.parseDouble(csvRow[Lon]),Double.parseDouble(csvRow[Alt]));
 		if (csvRow[Type].equals("P"))
-			game.packmans.add(new Packman(p,Integer.parseInt(csvRow[speed]),Double.parseDouble(csvRow[radius]),Integer.parseInt(csvRow[id])));
+			game.packmans.add(new Packman(p,(int)Double.parseDouble(csvRow[speed]),(int)Double.parseDouble(csvRow[radius]),(int)Double.parseDouble(csvRow[id])));
 		else
-			game.fruits.add(new Fruit(p,Integer.parseInt(csvRow[speed]),Integer.parseInt(csvRow[id])));
+			game.fruits.add(new Fruit(p,(int)Double.parseDouble(csvRow[speed]),(int)Double.parseDouble(csvRow[id])));
 	}
 
 }

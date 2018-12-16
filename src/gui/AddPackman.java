@@ -79,6 +79,7 @@ public class AddPackman extends JFrame {
 						labelEvent.setText("try again");
 					else {
 						gui.game.packmans.add(new Packman(locatoin, speed, radius, id));
+						gui.game.calculated = false;
 						gui.repaint();
 						setVisible(false);
 					}

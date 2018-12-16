@@ -19,15 +19,15 @@ public class Game2kml {
 	
 	private Game game;
 	private StringBuilder kml = new StringBuilder();
-	private String path;
+	private String pathName;
 	private String name;
 	
 	private long startingTime;
 	public static DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
 	
-	public void export(Game game, String path, String name) {
+	public void export(Game game, String pathName, String name) {
 		this.game = game;
-		this.path = path;
+		this.pathName = pathName;
 		this.name = name;
 		
 		ShortestPathAlgorithm algo = new ShortestPathAlgorithm(game);
@@ -39,7 +39,7 @@ public class Game2kml {
 		
 		try 
 		{
-			pw = new PrintWriter(new File(path + "\\" + name + ".kml"));
+			pw = new PrintWriter(new File(pathName + "\\" + name + ".kml"));
 		} 
 		catch (FileNotFoundException e) 
 		{

@@ -31,7 +31,9 @@ public class ImportCsv implements ActionListener {
 		int returnVal = fc.showOpenDialog(gui);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
+			gui.clear();
 			gui.game = convertor.convert(file);
+			gui.game.calculated = false;
 			gui.repaint();
 		}
 	}

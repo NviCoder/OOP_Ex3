@@ -32,23 +32,9 @@ public class ShortestPathAlgorithm {
 		return closest;
 	}
 
-	public void onePackman(Packman packman) {
-		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
-		while (!game.fruitsAlive.isEmpty()) {
-			Fruit closest = findCloseFruit(packman);
-			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
-			packman.path.add(nextPoint);
-			game.fruitsAlive.remove(closest);
-		}
-	}
-
-	public void multiPackmans() {
-		PathPoint firstPoint;
-		for (Packman packman: game.packmans){ //reset pathes
-			firstPoint = packman.path.getFirst(); 
-			packman.path.clear();
-			packman.path.add(firstPoint);
-		}
+	public void multiPackmans() {	
+		for (Packman packman: game.packmans) //reset pathes
+			packman.reset();
 		
 		Packman nextPackman = null;
 		Fruit nextFruit = null;
@@ -72,12 +58,23 @@ public class ShortestPathAlgorithm {
 			PathPoint nextPoint = new PathPoint(eatingPoint, minTime, weight);
 			nextPoint.setFruitEating(id);
 			nextPackman.path.add(nextPoint);
-			nextPackman.setSeconds(minTime + nextPackman.getSeconds());
 			nextPackman.setLocation(eatingPoint);
+			nextPackman.setSeconds(minTime);
+			nextPackman.setScore(nextPackman.getScore() + weight);
 			game.fruitsAlive.remove(nextFruit);
 		}
 		for (Packman packman: game.packmans)
 			packman.setLocation(packman.startLocation);
+	}
+
+	public void onePackman(Packman packman) {
+		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
+		while (!game.fruitsAlive.isEmpty()) {
+			Fruit closest = findCloseFruit(packman);
+			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
+			packman.path.add(nextPoint);
+			game.fruitsAlive.remove(closest);
+		}
 	}
 
 }
