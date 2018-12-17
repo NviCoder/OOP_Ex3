@@ -44,8 +44,8 @@ public class MainWindow extends JFrame implements MouseListener
 	public boolean addPackman = false;
 
 	public HashSet<Line> lines = new HashSet<>();
+	public boolean stopRunning = true;
 
-	public Thread thread;
 	public int totalWeight = 0;
 
 	private BufferedImage[] fruitsImages;
@@ -146,6 +146,7 @@ public class MainWindow extends JFrame implements MouseListener
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				stopRunning();
 				startPoint();
 			}
 		});
@@ -153,6 +154,7 @@ public class MainWindow extends JFrame implements MouseListener
 		addFruitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				stopRunning();
 				addFruit = !addFruit;
 				addPackman = false;
 			}
@@ -160,6 +162,7 @@ public class MainWindow extends JFrame implements MouseListener
 		addPackmanItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				stopRunning();
 				addPackman = !addPackman;
 				addFruit = false;
 			}
@@ -169,6 +172,7 @@ public class MainWindow extends JFrame implements MouseListener
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				stopRunning();
 				clear();
 			}
 		});
@@ -296,6 +300,18 @@ public class MainWindow extends JFrame implements MouseListener
 				lines.add(new Line(current.getLocation(), next.getLocation()));
 				current = next;
 			}
+		}
+	}
+	
+	public void stopRunning() {
+		if (stopRunning)
+			return;
+		stopRunning=true;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 

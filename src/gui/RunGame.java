@@ -27,12 +27,13 @@ public class RunGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		gui.stopRunning();
+		gui.stopRunning = false;
 		RealTime run = new RealTime(gui);
 		gui.addFruit = false;
 		gui.addPackman = false;
-		gui.thread = new Thread(run);
-		gui.thread.start();
+		Thread thread = new Thread(run);
+		thread.start();
 		
 	}
 

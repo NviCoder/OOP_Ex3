@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.AlgorithmParameterGenerator;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
 
@@ -27,12 +30,15 @@ public class Game {
 	public Set <Packman> packmans = new HashSet<Packman>();
 	public boolean calculated = true;
 	private double seconds = 0;
+	public ArrayList<PathPoint> allPoints = new ArrayList<>();
 	
 	public double findShortestPath() {
 		ShortestPathAlgorithm algorithm = new ShortestPathAlgorithm(this);
 		algorithm.multiPackmans();
 		calculated = true;
 		seconds = timeForGame();
+		
+		
 		return seconds;
 	}
 
@@ -72,6 +78,13 @@ public class Game {
 	
 	public double getSeconds() {
 		return seconds;
+	}
+	
+	public void sort() {
+		for (Packman packman: packmans) 
+			for (PathPoint point: packman.path)
+				allPoints.add(point);
+		allPoints.sort(new PathComperator());
 	}
 }
 

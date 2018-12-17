@@ -10,6 +10,7 @@ import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.Game;
 import gameObjects.Path;
+import gameObjects.PathComperator;
 import gameObjects.PathPoint;
 
 public class ShortestPathAlgorithm {
@@ -65,6 +66,7 @@ public class ShortestPathAlgorithm {
 		}
 		for (Packman packman: game.packmans)
 			packman.setLocation(packman.startLocation);
+		game.sort();
 	}
 
 	public void onePackman(Packman packman) {

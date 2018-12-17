@@ -24,6 +24,7 @@ public class EndGameListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		gui.stopRunning();
 		if (gui.game.packmans.isEmpty())
 			return;
 		if (!gui.game.calculated) { 

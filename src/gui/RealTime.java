@@ -17,6 +17,7 @@ public class RealTime implements Runnable {
 	@Override
 	public void run() {
 		if (!gui.game.calculated) {
+			gui.lines.clear();
 			gui.game.findShortestPath();
 		}
 
@@ -28,6 +29,8 @@ public class RealTime implements Runnable {
 
 
 		for (int time=0; time < endTime+1; time++ ) {
+			if (gui.stopRunning)
+				return;
 			long processingStart = System.currentTimeMillis();
 			for (Packman packman: gui.game.packmans) {
 				if (time > packman.path.getLast().getSeconds())

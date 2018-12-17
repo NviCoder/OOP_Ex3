@@ -69,6 +69,7 @@ public class AddPackman extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				gui.stopRunning();
 				double speed = -1, radius = -1;
 				try {
 					String speedStr = speedText.getText();
