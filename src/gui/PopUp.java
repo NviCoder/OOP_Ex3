@@ -19,6 +19,8 @@ import javax.swing.event.AncestorListener;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
+import GeoObjects.Fruit;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -113,6 +115,13 @@ public class PopUp {
 			totalWeight += addWeight;
 			weightValue.setText("" + totalWeight);
 		}
+	}
+
+	public void endPosition() {
+		timeValue.setText("" + (int)(100*game.getSeconds())/100.0);
+		for (Fruit fruit: game.fruits)
+			totalWeight += fruit.getWeight();
+		weightValue.setText("" + totalWeight);
 	}
 }
 //}

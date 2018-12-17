@@ -27,7 +27,6 @@ public class RunGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//popUp p = new popUp(gui.game.allPoints);
 		gui.stopRunning();
 		gui.stopRunning = false;
 		RealTime run = new RealTime(gui);

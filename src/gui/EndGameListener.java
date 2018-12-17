@@ -46,6 +46,8 @@ public class EndGameListener implements ActionListener {
 		gui.game.calculated = true;
 
 		gui.repaint();
+		PopUp pop = new PopUp(gui.game);
+		pop.endPosition();
 		System.out.println(gui.game.timetoString());
 	}
 
