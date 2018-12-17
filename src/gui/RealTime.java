@@ -21,14 +21,14 @@ public class RealTime implements Runnable {
 			gui.game.findShortestPath();
 		}
 
-		gui.totalWeight = 0;
+		PopUp pop = new PopUp(gui.game);
 		double endTime = gui.game.getSeconds();
 		gui.addAllLines();
 		gui.repaint();
 		System.out.println("total time: " + gui.game.timetoString());
 
-
 		for (int time=0; time < endTime+1; time++ ) {
+			pop.refresh(time);
 			if (gui.stopRunning)
 				return;
 			long processingStart = System.currentTimeMillis();
