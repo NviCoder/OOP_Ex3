@@ -17,6 +17,8 @@ The configuration of the game will be determined according to the information gi
 According to the example presented above, in the game with the configuration above, three Pacers will be defined in the detailed locations, all three with a speed of 1, and an eating radius of 1 meter, and 12 fruits are defined in positions specified with weight 1.
 You can create a csv file by yourself, or add fruits and pacmans into the map, with our GUI!
 
+![screenshot_7](https://user-images.githubusercontent.com/44750316/50180120-75f79d00-0311-11e9-886a-39a014fe88ef.png)
+
 
 Hope you enjoy!
 Elad and Yoav
