@@ -1,5 +1,4 @@
 package gui;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
 import convertor.Csv2Game;
-
+/**
+ * When the user wants to import a csv file with data of a new game.
+ * So when the button on the main window clicked. this class will make it happen.
+ * @author Yoav and Elad.
+ *
+ */
 public class ImportCsv implements ActionListener {
 
 	private MainWindow gui;

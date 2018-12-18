@@ -1,13 +1,18 @@
 package gameObjects;
-
 import GeoObjects.Point3D;
 
+/**
+ * This class is a single point of list of points that make up a path to packman.
+ * The point in fact is a fruit on the map that the packman will eat. 
+ */
 public class PathPoint {
 
 	private Point3D location;
 	private double seconds = 0;
 	private int weight = 0;
 	int fruitEating = -1;
+	
+	////////////////// ***Constructors****///////////////////////////////////
 	
 	public PathPoint(Point3D _location, double _seconds, int _weight) {
 		location = _location;
@@ -18,6 +23,8 @@ public class PathPoint {
 	public PathPoint(Point3D _location) {
 		this(_location, 0, 0);
 	}
+	
+	///////////////*** Getters and Setters**/////////////////////
 	
 	public void setFruitEating(int id) {
 		fruitEating = id;

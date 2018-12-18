@@ -32,13 +32,18 @@ import guiObjects.Pixel;
 import guiObjects.Line;
 import guiObjects.Map;
 
-
+/**
+ * This class is the main window of the GUI.
+ * This class contains all the GUI Objects, and arranges them for a user-friendly window
+ * This GUI powered by the main class.
+ * @author Yoav and Elad.
+ * @version 1.0
+ *
+ */
 public class MainWindow extends JFrame implements MouseListener
 {
 	public Map map;
 	public Game game = new Game();
-	public double proportionH = 1;
-	public double proportionW = 1;
 
 	public boolean addFruit = false;
 	public boolean addPackman = false;
@@ -54,9 +59,11 @@ public class MainWindow extends JFrame implements MouseListener
 	final JFileChooser fc = new JFileChooser();
 	final MyCoords mc = new MyCoords();
 	
+////////////////////***Constructors****///////////////////////////////////
 
 	public MainWindow(Map _map) 
 	{		
+		//For painting a random images to the map.
 		fruitsImages = new BufferedImage[6];
 		try {
 			fruitsImages[0] = ImageIO.read( new File("ImagesforGui\\apple.png" ));
@@ -67,7 +74,6 @@ public class MainWindow extends JFrame implements MouseListener
 			fruitsImages[5] = ImageIO.read( new File("ImagesforGui\\watermalon.png" ));
 			packmanImage = ImageIO.read( new File("ImagesforGui\\thePackman2.png" ));
 		} catch (IOException exc) {
-			//			e.printStackTrace();
 			System.out.println(exc.toString());
 		}
 
@@ -79,7 +85,8 @@ public class MainWindow extends JFrame implements MouseListener
 	private void initGUI() 
 	{
 
-		//add menu bar
+///////////////****Add menu bar******////////////////////////////////////////////
+		
 		MenuBar menuBar = new MenuBar();
 
 		Menu menuFile = new Menu("File");
@@ -112,7 +119,8 @@ public class MainWindow extends JFrame implements MouseListener
 
 		this.setMenuBar(menuBar);
 
-		//set listeners for the menu bar
+/////////************set listeners for the menu bar//////////////////////////
+		
 		importCsvItem.addActionListener(new ImportCsv(this));
 
 		exportToCsvItem.addActionListener(new ActionListener() {
@@ -177,9 +185,12 @@ public class MainWindow extends JFrame implements MouseListener
 			}
 		});
 	}
-
+	
+/////////////////////////////****Painting the map***///////////////////////////////////////
+	
 	public void paint(Graphics g)
 	{
+		//draw background
 		g.drawImage(map.myImage,8, 51, this.getWidth()-16, this.getHeight()-59, this);
 
 
@@ -197,7 +208,7 @@ public class MainWindow extends JFrame implements MouseListener
 		}
 
 
-		//draw pathes
+		//draw paths
 		g.setColor(Color.green);
 		for (Line line: lines) {
 			Pixel head = map.gps2pixel(line.getHead(), this.getWidth()-16, this.getHeight()-59);
@@ -206,27 +217,22 @@ public class MainWindow extends JFrame implements MouseListener
 		}
 	}
 
-
-	//	public Line addLine(Point3D gps0, Point3D gps1) {
-	//		Pixel head = map.gps2pixel(gps0, this.getWidth()-8, this.getHeight()-8);
-	//		Pixel tail = map.gps2pixel(gps1, this.getWidth()-8, this.getHeight()-8);
-	//		return new Line(head, tail);
-	//	}
-
+///////////////////////***Mouse Listeners****//////////////////////////////
+	
 	@Override
 	public void mouseClicked(MouseEvent arg) {
 		Pixel pixel = new Pixel(arg.getX()-8, arg.getY()-51);
 		System.out.println(pixel);
-		pixel.removeProportion(proportionW, proportionH);
 		if (addFruit) {
-			Fruit fruit = new Fruit(map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59), 1,  game.fruits.size()+1);
+			Fruit fruit = new Fruit(map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59), 1,
+					game.fruits.size()+1);
 			game.fruits.add(fruit);
 			game.calculated = false;
 			repaint();
 		}
 		if (addPackman) {
-			//TODO
-			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59), game.getNextPackmanID());
+			AddPackman adder = new AddPackman(this, map.pixel2gps(pixel, this.getWidth()-16, this.getHeight()-59),
+					game.getNextPackmanID());
 		}
 	}
 
@@ -282,7 +288,7 @@ public class MainWindow extends JFrame implements MouseListener
 		repaint();
 	}
 
-	public void startPoint() {
+	public void startPoint() {///kind of clear
 		for (Packman packman: game.packmans) {
 			packman.setLocation(packman.getStartLocation());
 		}

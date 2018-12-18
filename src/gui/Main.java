@@ -3,7 +3,16 @@ import javax.swing.JFrame;
 
 import guiObjects.Map;
 
-
+/**
+ * This class runs the Game!!
+ * Enjoy!!
+ * 
+ * Yoav and Elad.
+ * @version 1.0
+ * GitHub 
+ * https://github.com/NviCoder/OOP_Ex3
+ * Commit:  
+ */
 public class Main 
 {
 	public static void main(String[] args)

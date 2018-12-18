@@ -1,17 +1,21 @@
 package gui;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import gameObjects.PathPoint;
 import guiObjects.Line;
-
+/**
+ * When the user wants to see the end of the game.
+ * This EndGameListener will make it happend.
+ * @author Yoav and Elad.
+ *
+ */
 public class EndGameListener implements ActionListener {
 
 	private MainWindow gui;

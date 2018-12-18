@@ -14,21 +14,24 @@ import javax.swing.Popup;
 
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
-
+/**
+ * This class created for a small window when the user want to enter a packman.
+ * The window take from the user, the speed and the radius of the packman. 
+ */
 public class AddPackman extends JFrame {
 
 	MainWindow gui;
-	public Point3D locatoin;
+	public Point3D location;
 	public int id;
 
 	public JLabel labelEvent = new JLabel();
 	public JTextField speedText = new JTextField("");
 	public JTextField radiusText = new JTextField("");
 
-	public AddPackman(MainWindow gui, Point3D locatoin, int id) {
+	public AddPackman(MainWindow gui, Point3D location, int id) {
 		this.gui = gui;
 		this.id = id;
-		this.locatoin = locatoin;
+		this.location = location;
 		Init();
 	}
 
@@ -77,16 +80,16 @@ public class AddPackman extends JFrame {
 					String radiusStr = radiusText.getText();
 					radius = Double.parseDouble(radiusStr);
 					if (speed < 0 || radius < 0)
-						labelEvent.setText("try again");
+						labelEvent.setText("Try again");
 					else {
-						gui.game.packmans.add(new Packman(locatoin, speed, radius, id));
+						gui.game.packmans.add(new Packman(location, speed, radius, id));
 						gui.game.calculated = false;
 						gui.repaint();
 						setVisible(false);
 					}
 				}
 				catch (Exception ex) {
-					labelEvent.setText("try again");
+					labelEvent.setText("Try again");
 				}
 			}
 		});

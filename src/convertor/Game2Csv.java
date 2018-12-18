@@ -8,7 +8,12 @@ import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.Game;
-
+/**
+ * This class knows to make a csv file to a custom game, that the user decided.
+ * 
+ * The format is a field that spread by ",".
+ *
+ */
 public class Game2Csv {
 
 	private Game game;
@@ -22,12 +27,12 @@ public class Game2Csv {
 		this.fileName = fileName;
 		
 		create();
-//		csv.append("\r");
 		write();
 	}
 	
 	private void create() {
 		csv = new StringBuilder();
+		//Titles of the file.
 		csv.append("Type,id,Lat,Lon,Alt,Speed/Weight,Radius,"+game.packmans.size()+","+game.fruits.size());
 		
 		for (Packman packman: game.packmans)

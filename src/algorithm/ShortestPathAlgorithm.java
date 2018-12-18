@@ -1,7 +1,5 @@
 
-
 package algorithm;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -13,14 +11,32 @@ import gameObjects.Path;
 import gameObjects.PathComperator;
 import gameObjects.PathPoint;
 
+/**
+ * This is a class that gets a game, which is a collection of (Packmans and Fruits).
+ *  And calculates the optimal path so that all the fruits will be "eaten" as quickly as possible. 
+ *  This is an algorithmic class and includes calculating "fruit paths" for each of the packmans.
+ *  We created Auxiliary class called GpsAlgorithms, their we made Geophysical calculations. 
+ * 
+ * @author Yoav and Elad.
+ */
 public class ShortestPathAlgorithm {
-
 	private Game game;
+
+	////////////////////***Constructors****///////////////////////////////////
 
 	public ShortestPathAlgorithm(Game _game) {
 		game = _game;
 	}
-
+	
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////       Methods        /////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * This function find the closest fruit to one packman
+	 * @param packman The packman we check.
+	 * @return The closest fruit.
+	 */
 	private Fruit findCloseFruit(Packman packman) {
 		double minPath = Double.MAX_VALUE;
 		Fruit closest = null;
@@ -32,9 +48,23 @@ public class ShortestPathAlgorithm {
 		}
 		return closest;
 	}
-
+/**
+ * This is the Algorithm!
+ * We divided it into two situations:
+ * 1. Only one packman.
+ * 2. Multi Packmans.
+ * The algorithm checks for all the fruits Who is the one of all the 
+ * packmans that in the game, will reach to him first.
+ * (We consider speed and the time given for each Packman means that one Packman can be closer,
+ *  But in terms of time will take him more than one farther)
+ * when he find the one, the algorithm add the location of the fruit to the path of this packman,
+ * and remove this fruit from the "Alive" list of the fruits.
+ * The algorithm runs until the list of the "Alive fruits"
+ * is Empty.
+ * 
+ */
 	public void multiPackmans() {	
-		for (Packman packman: game.packmans) //reset pathes
+		for (Packman packman: game.packmans) //reset paths to the packmans.
 			packman.reset();
 		
 		Packman nextPackman = null;
@@ -68,12 +98,17 @@ public class ShortestPathAlgorithm {
 			packman.setLocation(packman.startLocation);
 		game.sort();
 	}
-
+/**
+ * The same Idea for One packman.
+ * Runs until we do not have more fruits to eat.
+ * @param packman
+ */
 	public void onePackman(Packman packman) {
 		game.fruitsAlive = new HashSet<Fruit>(game.fruits);
 		while (!game.fruitsAlive.isEmpty()) {
 			Fruit closest = findCloseFruit(packman);
-			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest), GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
+			PathPoint nextPoint = new PathPoint(GpsAlgorithms.eatingPoint(packman, closest),
+					GpsAlgorithms.eatingTime(packman, closest), closest.getWeight());
 			packman.path.add(nextPoint);
 			game.fruitsAlive.remove(closest);
 		}

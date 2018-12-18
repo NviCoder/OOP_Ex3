@@ -1,7 +1,10 @@
 package gameObjects;
-
 import java.util.Comparator;
 
+/**
+ * This is a Comparator between all the Points that in the game.
+ *
+ */
 public class PathComperator implements Comparator<PathPoint> {
 
 	@Override

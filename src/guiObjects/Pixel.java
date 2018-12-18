@@ -1,30 +1,27 @@
 package guiObjects;
-
+/**
+ * This class is Represents a pixel that on the screen.
+ * @author Yoav and Elad.
+ *
+ */
 public class Pixel {
 	
 	private int x;
 	private int y;
-	
+
+	////////////////////***Constructor****///////////////////////////////////
+
 	public Pixel(int x, int y) {
 		if (x<0 || y<0) {
-//			throw new RuntimeException("Bit couldn't be negative");
 			x = Math.max(0, x);
 			y = Math.max(0, y);
 		}
 		this.x = x;
 		this.y = y;
 	}
-	
-	public void setProportion(double ratioX, double ratioY) {
-		x = (int)(x*ratioX);
-		y = (int)(y*ratioY);
-	}
-	
-	public void removeProportion(double ratioX, double ratioY) {
-		x = (int)(x/ratioX);
-		y = (int)(y/ratioY);
-	}
-	
+
+	///////////////*** Getters and Setters**/////////////////////
+
 	public int x() {
 		return x;
 	}

@@ -1,5 +1,4 @@
 package gui;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 import GeoObjects.Fruit;
 
@@ -28,7 +27,12 @@ import java.awt.Window.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Point;
-
+/**
+ * This class we made for a pop up window, that will stream on live the runtime of
+ * the game and the weight that been eaten in the game.
+ * @author Yoav and Elad.
+ *
+ */
 public class PopUp {
 
 	private JFrame frmGameDate;
@@ -39,10 +43,11 @@ public class PopUp {
 	private JLabel timeValue;
 	private JLabel weightValue;
 
-	//public popUp(ArrayList<PathPoint> t) { ///sould be like this? 
+	//////////////////***Constructor****///////////////////////////////////
+
 	public PopUp(Game game) {
 		this.game = game;
-		iterator = game.allPoints.listIterator();
+		iterator = game.allPoints.listIterator(); 
 		initialize();
 		frmGameDate.setVisible(true);
 
@@ -91,15 +96,11 @@ public class PopUp {
 		lbSeconds.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lbSeconds.setBounds(263, 15, 65, 24);
 		frmGameDate.getContentPane().add(lbSeconds);
-		///////////////////////////////////////
-		//		Iterator<PathPoint> itr = t.iterator();
-		//	    while (itr.hasNext()) {
-		//	      PathPoint element = itr.next();
-		//	      int updateWeight = element.getWeight()+ Integer.parseInt(weightValue.getText());
-		//	      JLabel update_Weight = new JLabel(Integer.toString(updateWeight));
-		//	      weightValue = update_Weight;
+	
 	}
 	
+	///////////////*** Methods ***/////////////////////
+
 	public void refresh(int seconds) {		
 		int addWeight = 0;
 		while (iterator.hasNext()) {

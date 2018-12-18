@@ -10,7 +10,7 @@ import java.util.Set;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.Lister.Pack;
 
 import GeoObjects.Fruit;
 import GeoObjects.Packman;
@@ -28,7 +28,7 @@ public class Game {
 	public Set <Fruit> fruits = new HashSet<Fruit>();
 	public Set <Fruit> fruitsAlive;
 	public Set <Packman> packmans = new HashSet<Packman>();
-	public boolean calculated = true;
+	public boolean calculated = true; 
 	private double seconds = 0;
 	public ArrayList<PathPoint> allPoints = new ArrayList<>();
 	
@@ -36,12 +36,13 @@ public class Game {
 		ShortestPathAlgorithm algorithm = new ShortestPathAlgorithm(this);
 		algorithm.multiPackmans();
 		calculated = true;
-		seconds = timeForGame();
-		
-		
+		seconds = timeForGame();	
 		return seconds;
 	}
-
+/**
+ * The time of the game calculated by the slowest packman on the game.
+ * 
+ */
 	public double timeForGame() {
 		double maxTime = -1;
 		for (Packman packman: packmans) {
@@ -59,7 +60,7 @@ public class Game {
 				maxID = packman.getID();
 		return maxID + 1;
 	}
-	
+	// clears all the objects from the game.
 	public void clear() {
 		seconds = 0;
 		fruits.clear();
@@ -68,6 +69,11 @@ public class Game {
 		packmans.clear();
 	}
 	
+	/**
+	 * Those two function help us to show the data of the game in real time,
+	 * in the pop up window.
+	 *
+	 */	
 	public String timetoString() {
 		if (seconds < 60)
 			return ("seconds: "+seconds);
@@ -76,7 +82,7 @@ public class Game {
 		else return ("minutes: "+(int)seconds/60 +":" + (int)seconds%60);
 	}
 	
-	public double getSeconds() {
+	public double getSeconds() { 
 		return seconds;
 	}
 	

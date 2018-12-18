@@ -9,14 +9,19 @@ import GeoObjects.Fruit;
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.Game;
-
+/**
+ * This class takes a csv file, with a data of the game, and making the game.
+ * The Game will show on the map. 
+ *
+ *
+ */
 public class Csv2Game {
 	
 	private Game game;
 	private File file;
 	private String csvName;
 	private String[] title;
-	private int Type, id, Lat, Lon, Alt, speed, radius; ///What about the two numbers in the end ??
+	private int Type, id, Lat, Lon, Alt, speed, radius;
 	
 	public Game convert(String fileName) {
 		file = new File(fileName);
@@ -91,15 +96,24 @@ public class Csv2Game {
 		}	
 
 	}
-
+	/**
+	 * This function knows to add a fruit or packman to their Collections.
+	 * The value that distinguishes is the "Type":
+	 * "P" - packman.
+	 * "F"- fruit.  
+	 * @param csvRow
+	 */
 	private void addData(String[] csvRow)
 	{
 		
-		Point3D p = new Point3D(Double.parseDouble(csvRow[Lat]),Double.parseDouble(csvRow[Lon]),Double.parseDouble(csvRow[Alt]));
+		Point3D p = new Point3D(Double.parseDouble(csvRow[Lat]),
+				Double.parseDouble(csvRow[Lon]),Double.parseDouble(csvRow[Alt]));
 		if (csvRow[Type].equals("P"))
-			game.packmans.add(new Packman(p,(int)Double.parseDouble(csvRow[speed]),(int)Double.parseDouble(csvRow[radius]),(int)Double.parseDouble(csvRow[id])));
+			game.packmans.add(new Packman(p,(int)Double.parseDouble(csvRow[speed]),
+					(int)Double.parseDouble(csvRow[radius]),(int)Double.parseDouble(csvRow[id])));
 		else
-			game.fruits.add(new Fruit(p,(int)Double.parseDouble(csvRow[speed]),(int)Double.parseDouble(csvRow[id])));
+			game.fruits.add(new Fruit(p,(int)Double.parseDouble(csvRow[speed]),
+					(int)Double.parseDouble(csvRow[id])));
 	}
 
 }

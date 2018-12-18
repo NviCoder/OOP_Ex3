@@ -14,7 +14,11 @@ import GeoObjects.Point3D;
 import algorithm.ShortestPathAlgorithm;
 import gameObjects.Game;
 import gameObjects.PathPoint;
-
+/**
+ * A class that allows you to keep track of the movement of a robot (or robots) in a time,
+ *  in KML file, the track should be stored in a way that will enable it to run in KML and 
+ *  see the Google earth movement of robots and the "eating" of the fruit.
+ */
 public class Game2kml {
 	
 	private Game game;
@@ -59,7 +63,10 @@ public class Game2kml {
 		writePackmans();
 		writeEnd();
 	}
-
+/**
+ * Those functions use the "kml" string builder object and chains to him
+ * all the data from the game.  
+ */
 	private void writeOpen() {		
 		kml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 				"<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\">");
@@ -251,7 +258,7 @@ public class Game2kml {
 	}
 	
 	private String longToKmlTime(long utc) {		
-		java.util.Date date = new Date(utc);
+		java.util.Date date = new Date(utc); // to make the time a kml format time. 
 		return format.format(date);
 	}
 
