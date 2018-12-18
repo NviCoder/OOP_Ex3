@@ -1,19 +1,28 @@
 package gui;
-
 import java.util.ListIterator;
 
 import GeoObjects.Packman;
 import GeoObjects.Point3D;
 import gameObjects.PathPoint;
+/**
+ * This class allows us to the user to see on live
+ * by clicking on the real time button the packmans moving.
+ * @author Elad and Yoav.
+ *
+ */
 
 public class RealTime implements Runnable {
 
 	MainWindow gui;
-	
+
+	////////////////////***Constructor****///////////////////////////////////
+
 	public RealTime(MainWindow gui) {
 		this.gui = gui;
 	}
-
+	
+	///////////////*** Methods ***/////////////////////
+	
 	@Override
 	public void run() {
 		if (!gui.game.calculated) {
@@ -21,7 +30,7 @@ public class RealTime implements Runnable {
 			gui.game.findShortestPath();
 		}
 
-		PopUp pop = new PopUp(gui.game);
+		PopUp pop = new PopUp(gui.game); //Treating the Pop Up window
 		double endTime = gui.game.getSeconds();
 		gui.addAllLines();
 		gui.repaint();
@@ -43,7 +52,6 @@ public class RealTime implements Runnable {
 						if (next.getSeconds() < time)
 							current = next;
 						else {
-							//						gui.totalWeight += next.getWeight();
 							double ratio = (time - current.getSeconds()) / (next.getSeconds() - current.getSeconds());
 							Point3D mid = gui.mc.midPoint(current.getLocation(), next.getLocation(), ratio);
 							packman.setLocation(mid);
@@ -53,19 +61,16 @@ public class RealTime implements Runnable {
 				}
 			}
 			System.out.println("time: "+time);
-			//			gui.repaint();
-			gui.paint(gui.getGraphics());
+			gui.paint(gui.getGraphics()); //Update the data to the map!!
 			long processTime = 1000 - (System.currentTimeMillis() - processingStart);
 			try {
 				Thread.sleep(processTime);
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
 		for (Packman packman: gui.game.packmans) 
 			packman.setLocation(packman.path.getLast().getLocation());
-
 	}
 
 }
