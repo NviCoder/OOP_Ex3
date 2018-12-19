@@ -41,9 +41,11 @@ public class Game {
 	}
 /**
  * The time of the game calculated by the slowest packman on the game.
+ * @return the largest packman's time in the game 
  * 
  */
-	public double timeForGame() {
+	
+ 	public double timeForGame() {
 		double maxTime = -1;
 		for (Packman packman: packmans) {
 			double currentTime = packman.path.getLast().getSeconds();
@@ -72,7 +74,7 @@ public class Game {
 	/**
 	 * Those two function help us to show the data of the game in real time,
 	 * in the pop up window.
-	 *
+	 *@return string of time
 	 */	
 	public String timetoString() {
 		if (seconds < 60)

@@ -10,7 +10,7 @@ import GeoObjects.Point3D;
  *  infrastructure of points in space, finding distances computation degrees of the points on the earth 
  *  and so on...
  * 
- * @author Yoav & elad
+ * @author Yoav and elad
  *
  */
 public class MyCoords implements coords_converter {
@@ -92,8 +92,9 @@ public class MyCoords implements coords_converter {
 	
 	/**
 	 * 
-	 * @param other
-	 * @param ratio 0<= ratio <= 1
+	 * @param gps0 starting point
+	 * @param gps1 end point
+	 * @param ratio fraction in [0,1]
 	 * @return point on the vector between this point to other, such that the vector split by the ratio   
 	 */
 	public Point3D midPoint(Point3D gps0, Point3D gps1, double ratio) {

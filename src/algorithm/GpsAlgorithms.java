@@ -11,6 +11,10 @@ public class GpsAlgorithms {
 	
 	/**calculate the vector between two points
 	 * reduce the length of the vector by the packman's radius
+	 * @param packman any packman, with radius
+	 * @param fruit any fruit in the game
+	 * @return The nearest point is that packman can eat the fruit, considering his radius
+	 * 
 	 */
 	public static Point3D eatingPoint(Packman packman, Fruit fruit) {
 		MyCoords mc = new MyCoords();

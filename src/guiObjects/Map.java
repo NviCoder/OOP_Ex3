@@ -55,8 +55,11 @@ public class Map {
 	/**
 	 * This function convert gps point to a pixel.
 	 * @return The pixel of the gps point on the map.
+	 * @param point gps point
+	 * @param width , width of the map in pixels
+	 * @param height , height of the map in pixels
 	 */
-	public Pixel gps2pixel(Point3D point, int widht, int height) { 
+	public Pixel gps2pixel(Point3D point, int width, int height) { 
 		double imageLatD = nw.x() - se.x();
 		double currentLatD = nw.x() - point.x();
 		double fractionNorth = currentLatD / imageLatD; 
@@ -68,13 +71,16 @@ public class Map {
 		double currentImageLonD = rightMergin.y() - leftMergin.y();
 		double currentLonD = point.y() - leftMergin.y();
 		double fractionWest = currentLonD / currentImageLonD;
-		double lonpixel = fractionWest * widht;
+		double lonpixel = fractionWest * width;
 
 		return new Pixel((int)lonpixel, (int)latpixel);
 	}
 /**
  * This function convert a pixel to gps point.
  * @return A gps point from pixel in the screen.
+ * @param pixel pixel in the map
+ * @param widht width of the map pixels
+ * @param height height of the map pixels
  */
 	public Point3D pixel2gps (Pixel pixel, int widht, int height) {
 		//TODO
